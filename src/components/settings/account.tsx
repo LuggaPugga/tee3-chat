@@ -1,6 +1,24 @@
 import { Rocket, Sparkles, Headset, Copy } from "lucide-react"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../ui/alert-dialog"
+import { Button } from "../ui/button"
+import { useServerFn } from "@tanstack/react-start"
+import { deleteAccount } from "@/lib/delete-account"
+import { toast } from "sonner"
+import { useNavigate } from "@tanstack/react-router"
 
 export default function Account() {
+  const deleteAccountFn = useServerFn(deleteAccount)
+  const navigate = useNavigate()
   return (
     <div className="space-y-8">
       <div className="space-y-6">
@@ -63,9 +81,41 @@ export default function Account() {
                 Permanently delete your account and all associated data.
               </p>
               <div className="flex flex-row gap-2">
-                <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 text-destructive-foreground shadow-sm disabled:hover:bg-destructive h-9 px-4 py-2 border border-red-800/20 bg-red-800/80 hover:bg-red-600 dark:bg-red-800/20 hover:dark:bg-red-800">
-                  Delete Account
-                </button>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      variant="destructive"
+                      size="sm"
+                      className="border border-red-800/20 bg-red-800/80 hover:bg-red-600 dark:bg-red-800/20 hover:dark:bg-red-800"
+                    >
+                      Delete Account
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent className="border-border">
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This will permanently delete your account and all associated data. This
+                        action cannot be undone.{" "}
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel className="border-none">Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={async () => {
+                          const result = await deleteAccountFn()
+                          if (!result) {
+                            toast.error("Failed to delete account")
+                          } else {
+                            navigate({ to: "/" })
+                          }
+                        }}
+                      >
+                        Delete Account
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
             </div>
           </div>
