@@ -9,18 +9,29 @@ export const createChat = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
   .handler(async ({ data, context }) => {
     const { model, messages } = data
-    const chatName = await generateChatName(messages)
     const chatId = id()
+    const { user } = context
+
+    const temporaryName = "New Chat"
     await db.transact(
       db.tx.chats[chatId]
         .update({
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
-          name: chatName,
+          name: temporaryName,
           model: model,
         })
-        .link({ user: context.user.id })
+        .link({ user: user.id })
     )
+
+    generateChatName(messages, user.id).then((chatName) => {
+      return db.transact(
+        db.tx.chats[chatId].update({
+          name: chatName,
+          updated_at: new Date().toISOString(),
+        })
+      )
+    })
 
     return chatId
   })
