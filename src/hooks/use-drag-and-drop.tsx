@@ -12,13 +12,22 @@ export function useDragAndDrop(onFilesSelected: (files: File[]) => void) {
     [onFilesSelected]
   )
 
+  const hasFiles = useCallback((dataTransfer: DataTransfer | null) => {
+    if (!dataTransfer) return false
+    
+    return Array.from(dataTransfer.types).some(type => 
+      type === 'Files' || type.startsWith('application/') || type.startsWith('image/')
+    )
+  }, [])
+
   useEffect(() => {
     let dragCounter = 0
 
     const handleDragEnter = (e: DragEvent) => {
       e.preventDefault()
       dragCounter++
-      if (e.dataTransfer?.items && e.dataTransfer.items.length > 0) {
+      
+      if (hasFiles(e.dataTransfer)) {
         setShowDropOverlay(true)
       }
     }
@@ -40,9 +49,12 @@ export function useDragAndDrop(onFilesSelected: (files: File[]) => void) {
       dragCounter = 0
       setShowDropOverlay(false)
 
-      const files = Array.from(e.dataTransfer?.files || [])
-      if (files.length > 0) {
-        handleFilesDrop(files)
+      // Only process if actually dropping files
+      if (hasFiles(e.dataTransfer)) {
+        const files = Array.from(e.dataTransfer?.files || [])
+        if (files.length > 0) {
+          handleFilesDrop(files)
+        }
       }
     }
 
@@ -57,7 +69,7 @@ export function useDragAndDrop(onFilesSelected: (files: File[]) => void) {
       document.removeEventListener("dragover", handleDragOver)
       document.removeEventListener("drop", handleDrop)
     }
-  }, [handleFilesDrop])
+  }, [handleFilesDrop, hasFiles])
 
   return {
     showDropOverlay,

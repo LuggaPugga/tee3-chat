@@ -1,6 +1,3 @@
-"use client"
-
-import { useState, useEffect, useCallback } from "react"
 import { Upload, X } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -8,7 +5,7 @@ interface FileDropProps {
   onFilesDrop?: (files: File[]) => void
   onClose?: () => void
   acceptedFileTypes?: string[]
-  maxFileSize?: number // in MB
+  maxFileSize?: number
   maxFiles?: number
   className?: string
   isVisible?: boolean
@@ -16,7 +13,6 @@ interface FileDropProps {
 }
 
 export default function FileDrop({
-  onFilesDrop,
   onClose,
   acceptedFileTypes = [
     ".txt",
@@ -33,126 +29,9 @@ export default function FileDrop({
   maxFileSize = 10,
   maxFiles = 5,
   className,
-  isVisible: externalIsVisible,
+  isVisible = false,
   selectedFiles = [],
 }: FileDropProps) {
-  const [isDragActive, setIsDragActive] = useState(false)
-  const [dragDepth, setDragDepth] = useState(0)
-  const [internalIsVisible, setInternalIsVisible] = useState(false)
-
-  const isVisible = externalIsVisible !== undefined ? externalIsVisible : internalIsVisible
-
-  const handleDragEnter = useCallback((e: DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-
-    setDragDepth((prev) => prev + 1)
-
-    if (e.dataTransfer?.items && e.dataTransfer.items.length > 0) {
-      setInternalIsVisible(true)
-      setIsDragActive(true)
-    }
-  }, [])
-
-  const handleDragLeave = useCallback(
-    (e: DragEvent) => {
-      e.preventDefault()
-      e.stopPropagation()
-
-      setDragDepth((prev) => {
-        const newDepth = prev - 1
-        if (newDepth <= 0) {
-          setIsDragActive(false)
-          if (externalIsVisible === undefined) {
-            setInternalIsVisible(false)
-          }
-          return 0
-        }
-        return newDepth
-      })
-    },
-    [externalIsVisible]
-  )
-
-  const handleDragOver = useCallback((e: DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-  }, [])
-
-  const handleDrop = useCallback(
-    (e: DragEvent) => {
-      e.preventDefault()
-      e.stopPropagation()
-
-      setIsDragActive(false)
-      if (externalIsVisible === undefined) {
-        setInternalIsVisible(false)
-      }
-      setDragDepth(0)
-
-      const files = Array.from(e.dataTransfer?.files || [])
-
-      if (files.length > 0) {
-        const validFiles = files
-          .filter((file) => {
-            const fileExtension = "." + file.name.split(".").pop()?.toLowerCase()
-            const isValidType = acceptedFileTypes.some(
-              (type) =>
-                type.toLowerCase() === fileExtension ||
-                file.type.includes(type.replace(".", "")) ||
-                (type === ".txt" && file.type === "text/plain") ||
-                (type === ".md" && file.type === "text/markdown") ||
-                (type === ".pdf" && file.type === "application/pdf")
-            )
-            const isValidSize = file.size <= maxFileSize * 1024 * 1024
-            return isValidType && isValidSize
-          })
-          .slice(0, maxFiles)
-
-        if (validFiles.length > 0) {
-          onFilesDrop?.(validFiles)
-        }
-      }
-    },
-    [onFilesDrop, acceptedFileTypes, maxFileSize, maxFiles, externalIsVisible]
-  )
-
-  const handleClose = useCallback(() => {
-    if (externalIsVisible === undefined) {
-      setInternalIsVisible(false)
-    }
-    setIsDragActive(false)
-    setDragDepth(0)
-    onClose?.()
-  }, [onClose, externalIsVisible])
-
-  const handleKeyDown = useCallback(
-    (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        handleClose()
-      }
-    },
-    [handleClose]
-  )
-
-  useEffect(() => {
-    if (isVisible) {
-      document.addEventListener("dragenter", handleDragEnter)
-      document.addEventListener("dragleave", handleDragLeave)
-      document.addEventListener("dragover", handleDragOver)
-      document.addEventListener("drop", handleDrop)
-      document.addEventListener("keydown", handleKeyDown)
-
-      return () => {
-        document.removeEventListener("dragenter", handleDragEnter)
-        document.removeEventListener("dragleave", handleDragLeave)
-        document.removeEventListener("dragover", handleDragOver)
-        document.removeEventListener("drop", handleDrop)
-        document.removeEventListener("keydown", handleKeyDown)
-      }
-    }
-  }, [isVisible, handleDragEnter, handleDragLeave, handleDragOver, handleDrop, handleKeyDown])
-
   if (!isVisible) return null
 
   return (
@@ -164,14 +43,16 @@ export default function FileDrop({
         isVisible ? "opacity-100" : "opacity-0 pointer-events-none",
         className
       )}
-      onClick={handleClose}
+      onClick={onClose}
+      onDragOver={(e) => e.preventDefault()}
+      onKeyDown={(e) => e.key === "Escape" && onClose}
     >
       <div
         className="w-screen h-screen flex justify-center items-center flex-col relative"
         onClick={(e) => e.stopPropagation()}
       >
         <button
-          onClick={handleClose}
+          onClick={onClose}
           className="absolute top-8 right-8 p-2 text-white hover:text-gray-300 transition-colors"
         >
           <X className="size-6" />
