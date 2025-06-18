@@ -63,7 +63,10 @@ function LayoutComponent() {
                 )
               }
             >
-              {(theme === "dark" || theme === "boring-dark") ? <SunIcon /> : <MoonIcon />}
+              {theme === "dark" || theme === "boring-dark" ? <SunIcon /> : <MoonIcon />}
+            </Button>
+            <Button variant="ghost" className="hover:bg-muted/40">
+              Sign out
             </Button>
           </div>
         </header>
