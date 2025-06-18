@@ -8,6 +8,14 @@ import { db } from "@/utils/instant"
 export default function MainSidebar() {
   const [search, setSearch] = useState("")
   const auth = db.useAuth()
+  
+  const { data } = db.useQuery({
+    preferences: {
+      $: {
+        where: { user: auth.user!.id! },
+      },
+    },
+  })
 
   return (
     <Sidebar className="border-none p-2 flex flex-col h-full">
@@ -34,7 +42,9 @@ export default function MainSidebar() {
             <div className="flex w-full min-w-0 flex-row items-center gap-3">
               <div className="h-8 w-8 rounded-full ring-1 ring-muted-foreground/20 bg-muted" />
               <div className="flex min-w-0 flex-col text-foreground">
-                <span className="truncate text-sm font-medium">User</span>
+                <span className="truncate text-sm font-medium">
+                  {data?.preferences?.[0]?.name || "User"}
+                </span>
                 <span className="text-xs">Pro</span>
               </div>
             </div>
