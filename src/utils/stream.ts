@@ -20,7 +20,8 @@ export async function processStreamResponse(
   onChunk: (content: string, reasoning?: string, error?: string) => void
 ): Promise<void> {
   if (!response.body) {
-    throw new Error("Response body is empty")
+    console.error("Response body is empty")
+    return
   }
 
   const reader = response.body.getReader()
