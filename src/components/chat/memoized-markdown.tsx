@@ -10,7 +10,7 @@ const components: Components = {
     const language = match ? match[1] : ""
     const code = String(children).replace(/\n$/, "")
 
-    if (!inline && match) {
+    if (!inline) {
       return <CustomCodeBlock language={language} code={code} />
     }
 
@@ -47,9 +47,11 @@ const components: Components = {
 
 const MemoizedMarkdownBlock = memo(
   ({ content }: { content: string }) => {
+    const processedContent = content.replace(/\n(?!\n)/g, "  \n")
+
     return (
       <ReactMarkdown components={components} remarkPlugins={[remarkGfm]}>
-        {content}
+        {processedContent}
       </ReactMarkdown>
     )
   },
