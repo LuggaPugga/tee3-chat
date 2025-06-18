@@ -11,7 +11,7 @@ function Home() {
 
   return (
     <ChatLayout>
-      <div className="mx-auto flex w-full max-w-3xl flex-col px-4 pb-10 pt-10">
+      <div className="mx-auto flex w-full max-w-3xl flex-col px-4 pt-10">
         <Chat chatId={chatId} />
       </div>
     </ChatLayout>

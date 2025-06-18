@@ -39,9 +39,8 @@ export default function ChatMessages({
     allMessages.push(optimisticMessage)
   }
 
-
   return (
-    <div className="space-y-12 pb-[144px]">
+    <div className="space-y-12 pb-[40px]">
       <Wordmark setInput={setInput} />
 
       {!hasContent && !optimisticMessage && <EmptyChat setPrompt={setInput} />}
