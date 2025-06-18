@@ -22,7 +22,7 @@ export default function MainSidebar() {
         <Search search={search} setSearch={setSearch} />
       </SidebarHeader>
       <SidebarContent className="flex min-h-0 flex-1 flex-col gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden small-scrollbar scroll-shadow relative pb-2">
-        <ChatsList search={search} setSearch={setSearch} />
+        <ChatsList />
       </SidebarContent>
       <SidebarFooter className="flex flex-col  justify-end mt-auto">
         {auth.user?.id && !auth.isLoading ? (
