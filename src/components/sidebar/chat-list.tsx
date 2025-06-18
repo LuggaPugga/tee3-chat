@@ -7,13 +7,42 @@ import { EnrichedChat } from "@/lib/chat/types"
 import { categorizeChats } from "@/lib/chat/utils"
 import { ChatGroupDisplay } from "./chat-group-display"
 
-export default function ChatsList() {
+import { useRef, useEffect, useState } from "react"
+
+export default function ChatsList({ search }: { search: string }) {
+  const [debouncedSearch, setDebouncedSearch] = useState(search)
+  const debounceTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
+
+  useEffect(() => {
+    if (!search) {
+      setDebouncedSearch("")
+      if (debounceTimeout.current) clearTimeout(debounceTimeout.current)
+      return
+    }
+    if (debounceTimeout.current) clearTimeout(debounceTimeout.current)
+    debounceTimeout.current = setTimeout(() => {
+      setDebouncedSearch(search)
+    }, 100)
+    return () => {
+      if (debounceTimeout.current) clearTimeout(debounceTimeout.current)
+    }
+  }, [search])
+
   const { error, data } = db.useQuery({
     chats: {
       $: {
         order: {
           updated_at: "asc",
         },
+        ...(debouncedSearch
+          ? {
+              where: {
+                name: {
+                  $ilike: `%${debouncedSearch}%`,
+                },
+              },
+            }
+          : {}),
       },
     },
   })
