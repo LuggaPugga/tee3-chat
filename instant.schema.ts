@@ -1,6 +1,6 @@
 // Docs: https://www.instantdb.com/docs/modeling-data
 
-import { i } from "@instantdb/react"
+import { i } from "@instantdb/react";
 
 const _schema = i.schema({
   // We inferred 3 attributes!
@@ -40,6 +40,7 @@ const _schema = i.schema({
       tokens_per_second: i.number().optional(),
       tokens_used: i.number().optional(),
       updated_at: i.date(),
+      user_name: i.string().optional(),
     }),
     preferences: i.entity({
       knowledge: i.string().optional(),
@@ -59,6 +60,7 @@ const _schema = i.schema({
         on: "apiKeys",
         has: "one",
         label: "user",
+        onDelete: "cascade",
       },
       reverse: {
         on: "$users",
@@ -71,6 +73,7 @@ const _schema = i.schema({
         on: "chats",
         has: "one",
         label: "user",
+        onDelete: "cascade",
       },
       reverse: {
         on: "$users",
@@ -109,6 +112,7 @@ const _schema = i.schema({
         on: "preferences",
         has: "one",
         label: "user",
+        onDelete: "cascade",
       },
       reverse: {
         on: "$users",
@@ -130,12 +134,12 @@ const _schema = i.schema({
     },
   },
   rooms: {},
-})
+});
 
 // This helps Typescript display nicer intellisense
-type _AppSchema = typeof _schema
+type _AppSchema = typeof _schema;
 interface AppSchema extends _AppSchema {}
-const schema: AppSchema = _schema
+const schema: AppSchema = _schema;
 
-export type { AppSchema }
-export default schema
+export type { AppSchema };
+export default schema;

@@ -1,24 +1,18 @@
 // Docs: https://www.instantdb.com/docs/permissions
 
-import type { InstantRules } from "@instantdb/react"
+import type { InstantRules } from "@instantdb/react";
 
 const rules = {
   chats: {
-    bind: ["isOwner", "auth.id != null && data.id in auth.ref('$user.chats.id')"],
+    bind: [
+      "isOwner",
+      "auth.id != null && data.id in auth.ref('$user.chats.id')",
+    ],
     allow: {
       view: "isOwner",
       create: "isOwner",
       delete: "isOwner",
       update: "isOwner",
-    },
-  },
-  messages: {
-    bind: ["isChatOwner", "auth.id != null && data.id in auth.ref('$user.chats.messages.id')"],
-    allow: {
-      view: "isChatOwner",
-      create: "isChatOwner",
-      delete: "isChatOwner",
-      update: "isChatOwner",
     },
   },
   usage: {
@@ -31,12 +25,15 @@ const rules = {
     },
   },
   $files: {
-    bind: ["isInMessagesFolder", "auth.id != null && data.path.startsWith(auth.id)"],
+    bind: [
+      "isInMessagesFolder",
+      "auth.id != null && data.path.startsWith(auth.id)",
+    ],
     allow: {
       view: "isInMessagesFolder",
       create: "isInMessagesFolder",
-      update: "isInMessagesFolder",
       delete: "isInMessagesFolder",
+      update: "isInMessagesFolder",
     },
   },
   apiKeys: {
@@ -48,6 +45,18 @@ const rules = {
       update: "false",
     },
   },
+  messages: {
+    bind: [
+      "isChatOwner",
+      "auth.id != null && data.id in auth.ref('$user.chats.messages.id')",
+    ],
+    allow: {
+      view: "isChatOwner",
+      create: "isChatOwner",
+      delete: "isChatOwner",
+      update: "isChatOwner",
+    },
+  },
   preferences: {
     bind: ["isOwner", "auth.id != null && auth.id == data.id"],
     allow: {
@@ -57,6 +66,6 @@ const rules = {
       update: "isOwner",
     },
   },
-} satisfies InstantRules
+} satisfies InstantRules;
 
-export default rules
+export default rules;
