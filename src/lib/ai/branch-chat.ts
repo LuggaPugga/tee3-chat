@@ -14,7 +14,7 @@ export const branchChat = createServerFn({ method: "POST" })
       messages: { $: { where: { chat: originalChatId } } },
     })
     if (!originalChat || !originalChat.chats || originalChat.chats.length === 0) {
-      throw new Error("Chat not found")
+      return null
     }
     const chatName = originalChat.chats[0].name
 
