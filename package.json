@@ -52,8 +52,6 @@
     "zod": "^3.25.64"
   },
   "devDependencies": {
-    "@shikijs/markdown-it": "^3.6.0",
-    "@shikijs/rehype": "^3.6.0",
     "@tailwindcss/postcss": "^4.1.10",
     "@tailwindcss/typography": "^0.5.16",
     "@types/markdown-it": "^14.1.2",
