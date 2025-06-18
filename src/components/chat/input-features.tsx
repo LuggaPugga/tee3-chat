@@ -47,9 +47,9 @@ export function ReasoningEffortButton({
 }) {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Tooltip>
-          <TooltipTrigger asChild>
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <DropdownMenuTrigger asChild>
             <Button
               type="button"
               variant="ghost"
@@ -59,19 +59,19 @@ export function ReasoningEffortButton({
               <Brain className="h-4 w-4 scale-x-[-1]" />
               <span className="max-sm:hidden capitalize">{reasoningEffort}</span>
             </Button>
-          </TooltipTrigger>
-          <TooltipContent sideOffset={5}>Reasoning Effort</TooltipContent>
-        </Tooltip>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="border-none">
+          </DropdownMenuTrigger>
+        </TooltipTrigger>
+        <TooltipContent sideOffset={5}>Reasoning Effort</TooltipContent>
+      </Tooltip>
+      <DropdownMenuContent className="border-none [&_svg]:text-white [&_svg]:size-4 [&_svg]:scale-x-[-1]">
         <DropdownMenuItem onClick={() => setReasoningEffort("low")}>
-          <Brain className="h-4 w-4 scale-x-[-1] text-white" /> Low
+          <Brain className="" /> Low
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setReasoningEffort("medium")}>
-          <Brain className="h-4 w-4 scale-x-[-1] text-white" /> Medium
+          <Brain className="" /> Medium
         </DropdownMenuItem>
         <DropdownMenuItem onClick={() => setReasoningEffort("high")}>
-          <Brain className="h-4 w-4 scale-x-[-1] text-white" /> High
+          <Brain className="" /> High
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
