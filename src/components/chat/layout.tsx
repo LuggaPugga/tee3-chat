@@ -9,7 +9,7 @@ export default function ChatLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <>
-      <div className="inset-0 dark:bg-sidebar !fixed z-0">
+      <div className="inset-0 dark:bg-sidebar !fixed z-0 boring:hidden">
         <div
           className="absolute inset-0 opacity-40 light:hidden"
           style={{
