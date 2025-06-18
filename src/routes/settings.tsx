@@ -30,14 +30,22 @@ function LayoutComponent() {
     <div className="max-h-screen w-full overflow-y-auto" style={{ scrollbarGutter: "stable" }}>
       <div className="inset-0 -z-50 dark:bg-sidebar fixed boring:hidden">
         <div
-          className="absolute inset-0 opacity-40"
+          className="absolute inset-0 opacity-40 light:hidden"
           style={{
             backgroundImage:
               "radial-gradient(closest-corner at 180px 36px, rgba(255, 1, 111, 0.19), rgba(255, 1, 111, 0.08)), linear-gradient(rgb(63, 51, 69) 15%, rgb(7, 3, 9))",
           }}
         ></div>
+        <div
+          className="absolute inset-0 opacity-40 dark:hidden"
+          style={{
+            backgroundImage:
+              "radial-gradient(closest-corner at 120px 36px, rgba(255, 255, 255, 0.17), rgba(255, 255, 255, 0)), linear-gradient(rgb(254, 247, 255) 15%, rgb(244, 214, 250))",
+          }}
+        ></div>
+
         <div className="absolute inset-0 bg-noise"></div>
-        <div className="absolute inset-0 bg-black/40"></div>
+        <div className="absolute inset-0 bg-black/40 light:hidden"></div>
       </div>
 
       <div className="mx-auto flex max-w-[1200px] flex-col overflow-y-auto px-4 pb-24 pt-6 md:px-6 lg:px-8">
