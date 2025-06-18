@@ -1,9 +1,10 @@
-import { createFileRoute, Outlet, Link, useLocation } from "@tanstack/react-router"
+import { createFileRoute, Outlet, Link, useLocation, useNavigate } from "@tanstack/react-router"
 import { ArrowLeft, MoonIcon, SunIcon } from "lucide-react"
 import Profile from "@/components/settings/profile"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { useTheme } from "@/components/theme-provider"
+import { db } from "@/utils/instant"
 
 export const Route = createFileRoute("/settings")({
   component: LayoutComponent,
@@ -12,6 +13,7 @@ export const Route = createFileRoute("/settings")({
 function LayoutComponent() {
   const location = useLocation()
   const { theme, setTheme } = useTheme()
+  const navigate = useNavigate()
   const navigationItems = [
     { value: "account", label: "Account", href: "/settings/account" },
     { value: "customization", label: "Customization", href: "/settings/customization" },
@@ -65,7 +67,14 @@ function LayoutComponent() {
             >
               {theme === "dark" || theme === "boring-dark" ? <SunIcon /> : <MoonIcon />}
             </Button>
-            <Button variant="ghost" className="hover:bg-muted/40">
+            <Button
+              variant="ghost"
+              className="hover:bg-muted/40"
+              onClick={() => {
+                db.auth.signOut()
+                navigate({ to: "/" })
+              }}
+            >
               Sign out
             </Button>
           </div>
