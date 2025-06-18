@@ -280,7 +280,7 @@ export default function Customization() {
                 token, and estimated tokens in the message.
               </p>
             </div>
-            <Switch checked={statsForNerds} onCheckedChange={setStatsForNerds} />
+            <Switch disabled checked={statsForNerds} onCheckedChange={setStatsForNerds} />
           </div>
         </div>
       </div>
