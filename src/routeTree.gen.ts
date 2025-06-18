@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as SettingsRouteImport } from './routes/settings'
+import { Route as NewRouteImport } from './routes/new'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as SettingsIndexRouteImport } from './routes/settings/index'
 import { Route as SettingsModelsRouteImport } from './routes/settings/models'
@@ -24,6 +25,11 @@ import { Route as ChatChatIdRouteImport } from './routes/chat/$chatId'
 const SettingsRoute = SettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NewRoute = NewRouteImport.update({
+  id: '/new',
+  path: '/new',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -79,6 +85,7 @@ const ChatChatIdRoute = ChatChatIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/new': typeof NewRoute
   '/settings': typeof SettingsRouteWithChildren
   '/chat/$chatId': typeof ChatChatIdRoute
   '/settings/account': typeof SettingsAccountRoute
@@ -92,6 +99,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/new': typeof NewRoute
   '/chat/$chatId': typeof ChatChatIdRoute
   '/settings/account': typeof SettingsAccountRoute
   '/settings/api-keys': typeof SettingsApiKeysRoute
@@ -105,6 +113,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/new': typeof NewRoute
   '/settings': typeof SettingsRouteWithChildren
   '/chat/$chatId': typeof ChatChatIdRoute
   '/settings/account': typeof SettingsAccountRoute
@@ -120,6 +129,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/new'
     | '/settings'
     | '/chat/$chatId'
     | '/settings/account'
@@ -133,6 +143,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/new'
     | '/chat/$chatId'
     | '/settings/account'
     | '/settings/api-keys'
@@ -145,6 +156,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/new'
     | '/settings'
     | '/chat/$chatId'
     | '/settings/account'
@@ -159,6 +171,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  NewRoute: typeof NewRoute
   SettingsRoute: typeof SettingsRouteWithChildren
   ChatChatIdRoute: typeof ChatChatIdRoute
 }
@@ -170,6 +183,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof SettingsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/new': {
+      id: '/new'
+      path: '/new'
+      fullPath: '/new'
+      preLoaderRoute: typeof NewRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -273,6 +293,7 @@ const SettingsRouteWithChildren = SettingsRoute._addFileChildren(
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  NewRoute: NewRoute,
   SettingsRoute: SettingsRouteWithChildren,
   ChatChatIdRoute: ChatChatIdRoute,
 }
