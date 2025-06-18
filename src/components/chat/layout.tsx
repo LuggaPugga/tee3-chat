@@ -9,9 +9,9 @@ export default function ChatLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <>
-      <div className="inset-0 dark:bg-sidebar !fixed z-0 boring:hidden">
+      <div className="inset-0 dark:bg-sidebar !fixed z-0">
         <div
-          className="absolute inset-0 opacity-40 dark:block hidden"
+          className="absolute inset-0 opacity-40 light:hidden"
           style={{
             backgroundImage:
               "radial-gradient(closest-corner at 120px 36px, rgba(255, 1, 111, 0.19), rgba(255, 1, 111, 0.08)), linear-gradient(rgb(63, 51, 69) 15%, rgb(7, 3, 9))",
@@ -25,7 +25,7 @@ export default function ChatLayout({ children }: { children: React.ReactNode }) 
           }}
         ></div>
         <div className="absolute inset-0 bg-noise"></div>
-        <div className="absolute inset-0 bg-black/40 dark:block hidden"></div>
+        <div className="absolute inset-0 bg-black/40 light:hidden"></div>
       </div>
 
       <MainSidebar />

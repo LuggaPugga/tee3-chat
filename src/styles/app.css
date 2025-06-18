@@ -6,6 +6,7 @@
 
 @custom-variant boring (&:where(.boring-dark, .boring-dark *), &:where(.boring-light, .boring-light *));
 @custom-variant dark (&:is(.dark *), &:is(.boring-dark *));
+@custom-variant light (&:is(.light *), &:is(.boring-light *));
 
 @theme inline {
   --color-background: var(--background);
