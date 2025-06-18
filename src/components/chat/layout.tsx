@@ -3,14 +3,12 @@ import { SidebarInset, useSidebar } from "@/components/ui/sidebar"
 import MainSidebar from "@/components/sidebar/main-sidebar"
 import CollapsedMenu, { CollapsedMenuRight } from "../sidebar/collapsed-menu"
 import { Curve } from "../sidebar/curve"
-import SearchCommandMenu from "../search-menu"
 
 export default function ChatLayout({ children }: { children: React.ReactNode }) {
   const { open } = useSidebar()
 
   return (
     <>
-      <SearchCommandMenu />
       <div className="inset-0 dark:bg-sidebar !fixed z-0 boring:hidden">
         <div
           className="absolute inset-0 opacity-40 light:hidden"

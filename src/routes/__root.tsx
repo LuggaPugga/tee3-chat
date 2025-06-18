@@ -10,6 +10,7 @@ import { Toaster } from "@/components/ui/sonner"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { ChatStreamProvider } from "@/contexts/chat-stream-context"
 import RouteProtect from "@/components/route-protect"
+import SearchCommandMenu from "@/components/search-menu"
 
 export const Route = createRootRoute({
   head: () => ({
@@ -67,7 +68,10 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           <RouteProtect />
           <SidebarProvider>
             <SettingsProvider>
-              <ChatStreamProvider>{children}</ChatStreamProvider>
+              <ChatStreamProvider>
+                <SearchCommandMenu />
+                {children}
+              </ChatStreamProvider>
             </SettingsProvider>
           </SidebarProvider>
         </ThemeProvider>
