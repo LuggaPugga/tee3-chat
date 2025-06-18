@@ -3,6 +3,7 @@ import ChatMessage from "./message"
 import EmptyChat from "./empty-chat"
 import Loading from "./loading"
 import CancelledChat from "./cancelled-chat"
+import Wordmark from "./wordmark"
 
 interface ChatMessagesProps {
   messages: Message[]
@@ -38,8 +39,11 @@ export default function ChatMessages({
     allMessages.push(optimisticMessage)
   }
 
+
   return (
     <div className="space-y-12 pb-[144px]">
+      <Wordmark setInput={setInput} />
+
       {!hasContent && !optimisticMessage && <EmptyChat setPrompt={setInput} />}
 
       {allMessages.map((message) => {
