@@ -131,7 +131,7 @@ export function useChatActions({
             uploadedAttachments = await uploadFilesToStorage(
               fileUpload.selectedFiles,
               userMessageId,
-              user.id
+              user!.id
             )
 
             await db.transact(
