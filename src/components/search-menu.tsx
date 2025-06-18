@@ -61,6 +61,11 @@ export default function SearchCommandMenu() {
         setOpen((o) => !o)
       }
 
+      if ((e.key === "o" || e.key === "O") && (e.metaKey || e.ctrlKey) && e.shiftKey) {
+        e.preventDefault()
+        navigate({ to: "/" })
+      }
+
       if (!open) return
 
       switch (e.key) {
