@@ -1,0 +1,423 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@plugin "@tailwindcss/typography";
+
+@custom-variant boring (&:where(.boring-dark, .boring-dark *), &:where(.boring-light, .boring-light *));
+@custom-variant dark (&:is(.dark *), &:is(.boring-dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+    monospace;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --radius: 0.5rem;
+  --tracking-tighter: calc(var(--tracking-normal) - 0.05em);
+  --tracking-tight: calc(var(--tracking-normal) - 0.025em);
+  --tracking-wide: calc(var(--tracking-normal) + 0.025em);
+  --tracking-wider: calc(var(--tracking-normal) + 0.05em);
+  --tracking-widest: calc(var(--tracking-normal) + 0.1em);
+  --tracking-normal: var(--tracking-normal);
+  --shadow-2xl: var(--shadow-2xl);
+  --shadow-xl: var(--shadow-xl);
+  --shadow-lg: var(--shadow-lg);
+  --shadow-md: var(--shadow-md);
+  --shadow: var(--shadow);
+  --shadow-sm: var(--shadow-sm);
+  --shadow-xs: var(--shadow-xs);
+  --shadow-2xs: var(--shadow-2xs);
+  --spacing: var(--spacing);
+  --letter-spacing: var(--letter-spacing);
+  --shadow-offset-y: var(--shadow-offset-y);
+  --shadow-offset-x: var(--shadow-offset-x);
+  --shadow-spread: var(--shadow-spread);
+  --shadow-blur: var(--shadow-blur);
+  --shadow-opacity: var(--shadow-opacity);
+  --color-shadow-color: var(--shadow-color);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-chat-accent: var(--chat-accent);
+  --color-chat-input-gradient: var(--chat-input-gradient);
+  --color-chat-input-background: var(--chat-input-background);
+  --color-chat-overlay: var(--chat-overlay);
+  --color-chat-border: var(--chat-border);
+  --color-heading: var(--heading);
+  --color-chat-background: var(--chat-background);
+  --color-gradient-noise-top: var(--gradient-noise-top);
+}
+
+:root {
+  --background: hsl(293.7 46.3% 92%);
+  --foreground: hsl(296 56% 21%);
+  --card: hsl(291 54% 97%);
+  --card-foreground: hsl(240 10% 30%);
+  --popover: hsl(0 0% 100%);
+  --popover-foreground: hsl(296 56% 21%);
+  --primary: hsl(334.2 74.9% 56.9%);
+  --primary-foreground: hsl(0 0% 100%);
+  --secondary: hsl(314.7 61.6% 85.7%);
+  --secondary-foreground: hsl(295.8 40.9% 34.5%);
+  --muted: hsl(327.7 61.6% 78.7%);
+  --muted-foreground: hsl(327 77% 38%);
+  --accent: hsl(314.7 61.6% 85.7%);
+  --accent-foreground: hsl(240 10% 30%);
+  --destructive: hsl(335 94% 50%);
+  --destructive-foreground: hsl(0 0% 100%);
+  --border: hsl(304.6 27.7% 90.8%);
+  --input: hsl(317.4 44.2% 83.1%);
+  --ring: hsl(333.3 71.4% 50.6%);
+  --chart-1: hsl(12 76% 61%);
+  --chart-2: hsl(173 58% 39%);
+  --chart-3: hsl(197 37% 24%);
+  --chart-4: hsl(43 74% 66%);
+  --chart-5: hsl(27 87% 67%);
+  --radius: 0.5rem;
+  --sidebar-background: hsl(290.3 49.2% 87.6%);
+  --sidebar-foreground: hsl(240 10% 30%);
+  --sidebar-primary: hsl(240 10% 30%);
+  --sidebar-primary-foreground: hsl(0 0% 98%);
+  --sidebar-accent: hsl(60 5% 97%);
+  --sidebar-accent-foreground: hsl(240 10% 30%);
+  --sidebar-border: hsl(20 6% 92%);
+  --sidebar-ring: hsl(333.3 71.4% 50.6%);
+  --gradient-noise-top: hsl(292 42.9% 93.1%);
+  --color-heading: hsl(336.3 70.3% 19.8%);
+  --chat-border: hsl(304.8 61% 83.9%);
+  --chat-background: hsl(300 56% 98%);
+  --chat-accent: #f5ecf9;
+  --chat-input-gradient: hsl(295 100% 90%);
+  --chat-input-background: hsla(270, 0%, 100%, var(--blur-fallback, 0.1));
+  --chat-overlay: hsla(309, 63%, 92%, var(--blur-fallback, 0.72));
+  --wordmark-color: #ca0277;
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+    monospace;
+  --shadow-color: oklch(0 0 0);
+  --shadow-opacity: 0.1;
+  --shadow-blur: 3px;
+  --shadow-spread: 0px;
+  --shadow-offset-x: 0;
+  --shadow-offset-y: 1px;
+  --letter-spacing: 0em;
+  --spacing: 0.25rem;
+  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+  --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.1);
+  --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
+  --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
+  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+  --tracking-normal: 0em;
+}
+
+.dark {
+  --background: hsl(313.8 24.5% 10.4%);
+  --foreground: hsl(270 20% 97.8%);
+  --card: hsl(300 15.8% 3.7%);
+  --card-foreground: oklch(0.8456 0.0302 341.4597);
+  --popover: hsl(320 23.08% 5.1%);
+  --popover-foreground: oklch(0.9647 0.0091 341.8035);
+  --primary: hsl(332 100% 32%);
+  --primary-foreground: oklch(0.9012 0.0579 343.28);
+  --secondary: oklch(0.3138 0.0306 310.1);
+  --secondary-foreground: hsl(270 30% 83%);
+  --muted: hsl(283 9% 25%);
+  --muted-foreground: hsl(326 33% 86%);
+  --accent: oklch(0.3646 0.05 308.41);
+  --accent-foreground: oklch(0.9647 0.0091 341.8035);
+  --destructive: oklch(0.4587 0.1697 3.81);
+  --destructive-foreground: oklch(1 0 0);
+  --border: hsl(262.5 10% 15.7%);
+  --input: hsl(326.3 20% 15.7%);
+  --ring: oklch(0.5916 0.218 0.5844);
+  --chart-1: oklch(0.5316 0.1409 355.1999);
+  --chart-2: oklch(0.5633 0.1912 306.8561);
+  --chart-3: oklch(0.7227 0.1502 60.5799);
+  --chart-4: oklch(0.6193 0.2029 312.7422);
+  --chart-5: oklch(0.6118 0.2093 6.1387);
+  --sidebar: hsl(240 2.6% 7.6%);
+  --sidebar-foreground: oklch(0.8607 0.0293 343.6612);
+  --sidebar-primary: oklch(0.4882 0.2172 264.3763);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.2337 0.0261 338.1961);
+  --sidebar-accent-foreground: oklch(0.9674 0.0013 286.3752);
+  --sidebar-border: oklch(0 0 0);
+  --sidebar-ring: oklch(0.5916 0.218 0.5844);
+  --destructive-foreground: oklch(1 0 0);
+  --radius: 0.5rem;
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", "Noto Color Emoji";
+  --font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  --font-mono:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+    monospace;
+  --shadow-color: oklch(0 0 0);
+  --shadow-opacity: 0.1;
+  --shadow-blur: 3px;
+  --shadow-spread: 0px;
+  --shadow-offset-x: 0;
+  --shadow-offset-y: 1px;
+  --letter-spacing: 0em;
+  --spacing: 0.25rem;
+  --shadow-2xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-xs: 0 1px 3px 0px hsl(0 0% 0% / 0.05);
+  --shadow-sm: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+  --shadow: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 1px 2px -1px hsl(0 0% 0% / 0.1);
+  --shadow-md: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 2px 4px -1px hsl(0 0% 0% / 0.1);
+  --shadow-lg: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 4px 6px -1px hsl(0 0% 0% / 0.1);
+  --shadow-xl: 0 1px 3px 0px hsl(0 0% 0% / 0.1), 0 8px 10px -1px hsl(0 0% 0% / 0.1);
+  --shadow-2xl: 0 1px 3px 0px hsl(0 0% 0% / 0.25);
+
+  --chat-background: hsl(270 16.13% 12.16%);
+  --chat-input-background: hsla(270, 10%, 20%, var(--blur-fallback, 0.4));
+  --chat-input-gradient: oklch(0.3352 0.0545 320.1);
+  --chat-overlay: hsla(270, 12%, 16%, var(--blur-fallback, 0.71));
+  --chat-accent: rgba(25, 21, 30, 0.86);
+  --chat-border: hsl(333.3 22% 16.1%);
+  --gradient-noise-top: hsl(309 15% 9%);
+  --heading: oklch(0.625 0.1411 348.94);
+
+  --wordmark-color: oklch(0.8316 0.0557 343.63);
+}
+
+::selection {
+  color: var(--color-primary-foreground);
+  background-color: var(--color-primary);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    letter-spacing: var(--tracking-normal);
+  }
+  html {
+    scrollbar-gutter: stable;
+  }
+}
+
+.bg-noise {
+  background-image: url(/noise.png);
+  background-size: 96px 96px;
+  background-repeat: repeat;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+.button-reflect {
+  --min: #2e001f40 !important;
+  --max: #ffa6e2b0 !important;
+  --start: #000000d9 !important;
+}
+
+.border-reflect:is(.dark *, .boring-dark *) {
+  --gradientBorder-gradient:
+    linear-gradient(180deg, #93335b00, #93335bbd, #93335b17),
+    linear-gradient(15deg, #93335b1f 50%, #93335bbd);
+  --start: rgba(0, 0, 0, 0.92);
+}
+
+.border-reflect {
+  --c: 320 100% 75%;
+  --min: hsl(var(--c) / 0.2);
+  --max: hsl(var(--c) / 1);
+  --gradientBorder-gradient:
+    linear-gradient(180deg, var(--min), var(--max), var(--min)),
+    linear-gradient(15deg, var(--min) 50%, var(--max));
+  --opacity: 1;
+  --start: rgba(0, 0, 0, 0.85);
+  position: relative;
+}
+
+.border-reflect:before {
+  content: "";
+  pointer-events: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: var(--gradientBorder-size, 1px);
+  background: var(--gradientBorder-gradient);
+  -webkit-mask:
+    linear-gradient(var(--start), #000) content-box,
+    linear-gradient(var(--start), #000);
+  mask:
+    linear-gradient(var(--start), #000) content-box,
+    linear-gradient(var(--start), #000);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: var(--opacity, 1);
+}
+
+element.style {
+  --gradientBorder-gradient:
+    linear-gradient(180deg, var(--min), var(--max), var(--min)),
+    linear-gradient(15deg, var(--min) 50%, var(--max));
+  --start: #000000e0;
+  --opacity: 1;
+}
+
+.ease-snappy {
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.scroll-shadow {
+  /* Custom scroll styling for the model dropdown */
+  scrollbar-width: thin;
+  scrollbar-color: hsl(var(--muted-foreground) / 0.3) transparent;
+}
+
+.scroll-shadow::-webkit-scrollbar {
+  width: 6px;
+}
+
+.scroll-shadow::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scroll-shadow::-webkit-scrollbar-thumb {
+  background-color: hsl(var(--muted-foreground) / 0.3);
+  border-radius: 3px;
+}
+
+.scroll-shadow::-webkit-scrollbar-thumb:hover {
+  background-color: hsl(var(--muted-foreground) / 0.5);
+}
+
+.prose.prose-pink:is(.dark *, .boring-dark *) {
+  --tw-prose-td-borders: #463854;
+  --tw-prose-th-borders: #6d5d7f;
+  --tw-prose-pre-bg: rgba(0, 0, 0, 0.5);
+  --tw-prose-pre-code: #d8c3ef;
+  --tw-prose-code: #fff;
+  --tw-prose-kbd-shadows: #f9f8fb;
+  --tw-prose-kbd: #fff;
+  --tw-prose-captions: #bf9be4;
+  --tw-prose-quote-borders: #dc749e;
+  --tw-prose-quotes: #f2ebfa;
+  --tw-prose-hr: #dc749e;
+  --tw-prose-bullets: #dc749e;
+  --tw-prose-counters: #dc749e;
+  --tw-prose-bold: #f2ebfa;
+  --tw-prose-links: #f472b6;
+  --tw-prose-lead: #d8c3ef;
+  --tw-prose-headings: #faf7fd;
+  --tw-prose-body: #f2ebfa;
+}
+
+.prose.prose-pink {
+  --tw-prose-td-borders: #eadef7;
+  --tw-prose-th-borders: #d8c3ef;
+  --tw-prose-pre-bg: #563271;
+  --tw-prose-pre-code: #f2ebfa;
+  --tw-prose-code: #492c61;
+  --tw-prose-captions: #7b44ab;
+  --tw-prose-quote-borders: #c4739d;
+  --tw-prose-quotes: #492c61;
+  --tw-prose-hr: #d8c3ef;
+  --tw-prose-bullets: #c4739d;
+  --tw-prose-counters: #c4739d;
+  --tw-prose-bold: #492c61;
+  --tw-prose-lead: #7b44ab;
+  --tw-prose-headings: #563271;
+  --tw-prose-body: #492c61;
+  --tw-prose-links: #da006b;
+  --tw-prose-kbd-shadows: #501854;
+  --tw-prose-kbd: #111827;
+}
+
+/* Shiki has some !important styles that we need to override. */
+/* html.dark .shiki,
+html.dark .shiki span {
+  color: var(--shiki-dark) !important;
+  background-color: var(--shiki-dark-bg) !important;
+  font-style: var(--shiki-dark-font-style) !important;
+  font-weight: var(--shiki-dark-font-weight) !important;
+  text-decoration: var(--shiki-dark-text-decoration) !important;
+} */
+
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-muted-foreground) 40%, transparent);
+  border-radius: 4px;
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  -webkit-background-clip: content-box;
+}
+
+.dark ::-webkit-scrollbar-thumb,
+.boring-dark ::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--color-muted-foreground) 20%, transparent);
+  border-radius: 4px;
+  border: 1px solid transparent;
+  background-clip: content-box;
+  -webkit-background-clip: content-box;
+}
+
+.prompt-form {
+  position: relative;
+}
