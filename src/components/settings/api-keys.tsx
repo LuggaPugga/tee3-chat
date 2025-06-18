@@ -5,6 +5,7 @@ import { uploadApiKey } from "@/utils/upload-api-key"
 import { useServerFn } from "@tanstack/react-start"
 import { db } from "@/utils/instant"
 import { ApiProviders } from "@/lib/ai/models"
+import { toast } from "sonner"
 
 const providers = ApiProviders
 
@@ -50,7 +51,7 @@ export default function ApiKeys() {
       })
 
       if (!successful) {
-        throw new Error("Failed to save API key")
+        toast.error("Failed to save API key")
       }
 
       setKeys((prev) => ({ ...prev, [provider]: "" }))
