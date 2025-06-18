@@ -235,14 +235,31 @@ export default function Customization() {
             <Switch
               checked={theme === "boring-dark" || theme === "boring-light"}
               onCheckedChange={() => {
-                if (theme === "dark") {
-                  setTheme("boring-dark")
-                } else if (theme === "light") {
-                  setTheme("boring-light")
-                } else if (theme === "boring-dark") {
-                  setTheme("dark")
-                } else if (theme === "boring-light") {
-                  setTheme("light")
+                switch (theme) {
+                  case "dark": {
+                    setTheme("boring-dark")
+                    break
+                  }
+                  case "light": {
+                    setTheme("boring-light")
+                    break
+                  }
+                  case "boring-dark": {
+                    setTheme("dark")
+                    break
+                  }
+                  case "boring-light": {
+                    setTheme("light")
+                    break
+                  }
+                  case "system": {
+                    const isDark =
+                      window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+                    setTheme(isDark ? "boring-dark" : "boring-light")
+                    break
+                  }
+                  default:
+                    break
                 }
               }}
             />
