@@ -1,171 +1,118 @@
-import { Mail, MessageSquare, Bug, Lightbulb, Send } from "lucide-react"
+import { Bug, CircleAlert, ScrollText, Sparkles, Shield } from "lucide-react"
+
+const DiscordIcon = (props: React.SVGProps<SVGSVGElement>) => (
+  <svg
+    viewBox="0 0 256 199"
+    width="1em"
+    height="1em"
+    xmlns="http://www.w3.org/2000/svg"
+    preserveAspectRatio="xMidYMid"
+    fill="currentColor"
+    {...props}
+  >
+    <path d="M216.856 16.597A208.502 208.502 0 0 0 164.042 0c-2.275 4.113-4.933 9.645-6.766 14.046-19.692-2.961-39.203-2.961-58.533 0-1.832-4.4-4.55-9.933-6.846-14.046a207.809 207.809 0 0 0-52.855 16.638C5.618 67.147-3.443 116.4 1.087 164.956c22.169 16.555 43.653 26.612 64.775 33.193A161.094 161.094 0 0 0 79.735 175.3a136.413 136.413 0 0 1-21.846-10.632 108.636 108.636 0 0 0 5.356-4.237c42.122 19.702 87.89 19.702 129.51 0a131.66 131.66 0 0 0 5.355 4.237 136.07 136.07 0 0 1-21.886 10.653c4.006 8.02 8.638 15.67 13.873 22.848 21.142-6.58 42.646-16.637 64.815-33.213 5.316-56.288-9.08-105.09-38.056-148.36ZM85.474 135.095c-12.645 0-23.015-11.805-23.015-26.18s10.149-26.2 23.015-26.2c12.867 0 23.236 11.804 23.015 26.2.02 14.375-10.148 26.18-23.015 26.18Zm85.051 0c-12.645 0-23.014-11.805-23.014-26.18s10.148-26.2 23.014-26.2c12.867 0 23.236 11.804 23.015 26.2 0 14.375-10.148 26.18-23.015 26.18Z" />
+  </svg>
+)
 
 export default function Contact() {
   return (
-    <div className="space-y-8">
-      <div className="space-y-6">
-        <h2 className="text-2xl font-bold">Contact Us</h2>
-        <p className="text-muted-foreground">
-          Get help, report issues, or share feedback with our team.
-        </p>
-
-        <div className="space-y-6">
-          <div className="grid gap-4 md:grid-cols-2">
-            <div className="space-y-4">
-              <h3 className="text-lg font-medium">Quick Actions</h3>
-              <div className="space-y-3">
-                <button className="flex items-center gap-3 w-full p-4 border rounded-lg hover:bg-accent text-left">
-                  <Bug className="h-6 w-6 text-red-500" />
-                  <div>
-                    <h4 className="font-medium">Report a Bug</h4>
-                    <p className="text-sm text-muted-foreground">
-                      Found something broken? Let us know!
-                    </p>
-                  </div>
-                </button>
-
-                <button className="flex items-center gap-3 w-full p-4 border rounded-lg hover:bg-accent text-left">
-                  <Lightbulb className="h-6 w-6 text-yellow-500" />
-                  <div>
-                    <h4 className="font-medium">Feature Request</h4>
-                    <p className="text-sm text-muted-foreground">
-                      Suggest new features or improvements
-                    </p>
-                  </div>
-                </button>
-
-                <button className="flex items-center gap-3 w-full p-4 border rounded-lg hover:bg-accent text-left">
-                  <MessageSquare className="h-6 w-6 text-blue-500" />
-                  <div>
-                    <h4 className="font-medium">General Support</h4>
-                    <p className="text-sm text-muted-foreground">
-                      Need help with using the platform?
-                    </p>
-                  </div>
-                </button>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h3 className="text-lg font-medium">Contact Information</h3>
-              <div className="space-y-4 p-4 border rounded-lg">
-                <div className="flex items-center gap-3">
-                  <Mail className="h-5 w-5 text-primary" />
-                  <div>
-                    <h4 className="font-medium">Email Support</h4>
-                    <p className="text-sm text-muted-foreground">support@t3chat.com</p>
-                  </div>
-                </div>
-
-                <div>
-                  <h4 className="font-medium mb-2">Response Times</h4>
-                  <div className="text-sm text-muted-foreground space-y-1">
-                    <p>• Pro users: Within 4 hours</p>
-                    <p>• Free users: Within 24 hours</p>
-                    <p>• Critical issues: Within 1 hour</p>
-                  </div>
-                </div>
-              </div>
+    <div className="space-y-4">
+      <h2 className="text-2xl font-bold">We're here to help!</h2>
+      <div className="space-y-4 md:max-w-lg">
+        <a
+          rel="noopener noreferrer"
+          className="block rounded-lg border border-secondary p-4 transition-colors hover:bg-secondary/40"
+          href="/sso/featurebase"
+          target="_blank"
+        >
+          <div className="flex items-center gap-4">
+            <Sparkles className="h-5 w-5 text-primary" />
+            <div>
+              <h3 className="font-medium">Have a cool feature idea?</h3>
+              <p className="text-sm text-muted-foreground/80">
+                Vote on upcoming features or suggest your own
+              </p>
             </div>
           </div>
-
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">Send us a Message</h3>
-            <form className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Subject</label>
-                  <select className="w-full p-2 border rounded-md bg-background">
-                    <option>General Question</option>
-                    <option>Bug Report</option>
-                    <option>Feature Request</option>
-                    <option>Billing Issue</option>
-                    <option>Technical Support</option>
-                  </select>
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">Priority</label>
-                  <select className="w-full p-2 border rounded-md bg-background">
-                    <option>Low</option>
-                    <option selected>Medium</option>
-                    <option>High</option>
-                    <option>Critical</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <label className="text-sm font-medium">Message</label>
-                <textarea
-                  className="w-full p-3 border rounded-md bg-background min-h-[120px]"
-                  placeholder="Describe your issue or question in detail..."
-                />
-              </div>
-
-              <div className="space-y-3">
-                <label className="flex items-center space-x-2">
-                  <input type="checkbox" className="rounded border-input" />
-                  <span className="text-sm">Include system information for debugging</span>
-                </label>
-
-                <button
-                  type="submit"
-                  className="inline-flex items-center gap-2 px-6 py-2 rounded-md bg-primary text-primary-foreground hover:bg-primary/90"
-                >
-                  <Send className="h-4 w-4" />
-                  Send Message
-                </button>
-              </div>
-            </form>
-          </div>
-
-          <div className="space-y-4">
-            <h3 className="text-lg font-medium">Resources</h3>
-            <div className="grid gap-3 md:grid-cols-3">
-              <a
-                href="#"
-                className="flex items-center gap-3 p-4 border rounded-lg hover:bg-accent transition-colors"
-              >
-                <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
-                  <span className="text-blue-600 dark:text-blue-400 text-sm font-medium">?</span>
-                </div>
-                <div>
-                  <h4 className="font-medium">FAQ</h4>
-                  <p className="text-sm text-muted-foreground">Common questions</p>
-                </div>
-              </a>
-
-              <a
-                href="#"
-                className="flex items-center gap-3 p-4 border rounded-lg hover:bg-accent transition-colors"
-              >
-                <div className="w-8 h-8 bg-green-100 dark:bg-green-900 rounded-lg flex items-center justify-center">
-                  <span className="text-green-600 dark:text-green-400 text-sm font-medium">📖</span>
-                </div>
-                <div>
-                  <h4 className="font-medium">Documentation</h4>
-                  <p className="text-sm text-muted-foreground">User guides</p>
-                </div>
-              </a>
-
-              <a
-                href="#"
-                className="flex items-center gap-3 p-4 border rounded-lg hover:bg-accent transition-colors"
-              >
-                <div className="w-8 h-8 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
-                  <span className="text-purple-600 dark:text-purple-400 text-sm font-medium">
-                    💬
-                  </span>
-                </div>
-                <div>
-                  <h4 className="font-medium">Community</h4>
-                  <p className="text-sm text-muted-foreground">Discord server</p>
-                </div>
-              </a>
+        </a>
+        <a
+          rel="noopener noreferrer"
+          className="block rounded-lg border border-secondary p-4 transition-colors hover:bg-secondary/40"
+          href="/sso/featurebase"
+          target="_blank"
+        >
+          <div className="flex items-center gap-4">
+            <Bug className="h-5 w-5 text-primary" />
+            <div>
+              <h3 className="font-medium">Found a non-critical bug?</h3>
+              <p className="text-sm text-muted-foreground/80">
+                UI glitches or formatting issues? Report them here :)
+              </p>
             </div>
           </div>
-        </div>
+        </a>
+        <a
+          href="mailto:support@ping.gg"
+          className="block rounded-lg border border-secondary p-4 transition-colors hover:bg-secondary/40"
+        >
+          <div className="flex items-center gap-4">
+            <CircleAlert className="h-5 w-5 text-primary" />
+            <div>
+              <h3 className="font-medium">Having account or billing issues?</h3>
+              <p className="text-sm text-muted-foreground/80">
+                Email us for priority support - support@ping.gg
+              </p>
+            </div>
+          </div>
+        </a>
+        <a
+          href="https://discord.gg/xHdCpcPHRE"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block rounded-lg border border-secondary p-4 transition-colors hover:bg-secondary/40"
+        >
+          <div className="flex items-center gap-4">
+            <DiscordIcon className="h-5 w-5 text-primary" />
+            <div>
+              <h3 className="font-medium">Want to join the community?</h3>
+              <p className="text-sm text-muted-foreground/80">
+                Come hang out in our Discord! Chat with the team and other users
+              </p>
+            </div>
+          </div>
+        </a>
+        <a
+          href="/privacy-policy"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block rounded-lg border border-secondary p-4 transition-colors hover:bg-secondary/40"
+        >
+          <div className="flex items-center gap-4">
+            <Shield className="h-5 w-5 text-primary" />
+            <div>
+              <h3 className="font-medium">Privacy Policy</h3>
+              <p className="text-sm text-muted-foreground/80">
+                Read our privacy policy and data handling practices
+              </p>
+            </div>
+          </div>
+        </a>
+        <a
+          href="/terms-of-service"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block rounded-lg border border-secondary p-4 transition-colors hover:bg-secondary/40"
+        >
+          <div className="flex items-center gap-4">
+            <ScrollText className="h-5 w-5 text-primary" />
+            <div>
+              <h3 className="font-medium">Terms of Service</h3>
+              <p className="text-sm text-muted-foreground/80">
+                Review our terms of service and usage guidelines
+              </p>
+            </div>
+          </div>
+        </a>
       </div>
     </div>
   )
