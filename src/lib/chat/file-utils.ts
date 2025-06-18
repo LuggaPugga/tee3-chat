@@ -23,7 +23,7 @@ export async function uploadFilesToStorage(
   messageId: string,
   userId: string
 ): Promise<FileAttachment[]> {
-  const uploadPromises = files.map(async (file): Promise<FileAttachment> => {
+  const uploadPromises = files.map(async (file): Promise<FileAttachment | null> => {
     const path = `${userId}/messages/${messageId}/${file.name}`
 
     try {
@@ -49,11 +49,12 @@ export async function uploadFilesToStorage(
       }
     } catch (error) {
       console.error(`Failed to upload file ${file.name}:`, error)
-      throw new Error(`Upload failed for ${file.name}`)
+      return null
     }
   })
 
-  return Promise.all(uploadPromises)
+  const results = await Promise.all(uploadPromises)
+  return results.filter((result): result is FileAttachment => result !== null)
 }
 
 export function getMessageFiles(messageData: any): FileAttachment[] {
