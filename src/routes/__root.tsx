@@ -9,6 +9,7 @@ import { SettingsProvider } from "@/components/settings-provider"
 import { Toaster } from "@/components/ui/sonner"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { ChatStreamProvider } from "@/contexts/chat-stream-context"
+import RouteProtect from "@/components/route-protect"
 
 export const Route = createRootRoute({
   head: () => ({
@@ -76,6 +77,7 @@ function RootDocument({ children }: { children: React.ReactNode }) {
           disableTransitionOnChange
         >
           <Toaster />
+          <RouteProtect />
           <SidebarProvider>
             <SettingsProvider>
               <ChatStreamProvider>{children}</ChatStreamProvider>

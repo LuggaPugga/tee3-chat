@@ -5,6 +5,7 @@ import { createChat } from "@/lib/ai/create-chat"
 import { useServerFn } from "@tanstack/react-start"
 import ChatLayout from "@/components/chat/layout"
 import { useRouter } from "@tanstack/react-router"
+import LoginDialog from "@/components/login-dialog"
 
 export const Route = createFileRoute("/")({
   component: Home,
@@ -12,6 +13,7 @@ export const Route = createFileRoute("/")({
 
 function Home() {
   const router = useRouter()
+
   const [currentChatId, setCurrentChatId] = useState<string | null>(null)
   const createChatFn = useServerFn(createChat)
 
@@ -33,6 +35,7 @@ function Home() {
       <div className="mx-auto flex w-full max-w-3xl flex-col px-4 pb-10 pt-10">
         <Chat chatId={currentChatId || undefined} preSubmit={handlePreSubmit} />
       </div>
+      <LoginDialog />
     </ChatLayout>
   )
 }
