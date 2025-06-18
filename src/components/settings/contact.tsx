@@ -1,4 +1,5 @@
 import { Bug, CircleAlert, ScrollText, Sparkles, Shield } from "lucide-react"
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 
 const DiscordIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg
@@ -14,105 +15,62 @@ const DiscordIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 )
 
+const contactItems = [
+  {
+    icon: <Sparkles className="h-5 w-5 text-primary" />,
+    title: "Have a cool feature idea?",
+    description: "Vote on upcoming features or suggest your own",
+  },
+  {
+    icon: <Bug className="h-5 w-5 text-primary" />,
+    title: "Found a non-critical bug?",
+    description: "UI glitches or formatting issues? Report them here :)",
+  },
+  {
+    icon: <CircleAlert className="h-5 w-5 text-primary" />,
+    title: "Having account or billing issues?",
+    description: "Email us for priority support - support@ping.gg",
+  },
+  {
+    icon: <DiscordIcon className="h-5 w-5 text-primary" />,
+    title: "Want to join the community?",
+    description: "Come hang out in our Discord! Chat with the team and other users",
+  },
+  {
+    icon: <Shield className="h-5 w-5 text-primary" />,
+    title: "Privacy Policy",
+    description: "Read our privacy policy and data handling practices",
+  },
+  {
+    icon: <ScrollText className="h-5 w-5 text-primary" />,
+    title: "Terms of Service",
+    description: "Review our terms of service and usage guidelines",
+  },
+]
+
 export default function Contact() {
   return (
     <div className="space-y-4">
       <h2 className="text-2xl font-bold">We're here to help!</h2>
       <div className="space-y-4 md:max-w-lg">
-        <a
-          rel="noopener noreferrer"
-          className="block rounded-lg border border-secondary p-4 transition-colors hover:bg-secondary/40"
-          href="/sso/featurebase"
-          target="_blank"
-        >
-          <div className="flex items-center gap-4">
-            <Sparkles className="h-5 w-5 text-primary" />
-            <div>
-              <h3 className="font-medium">Have a cool feature idea?</h3>
-              <p className="text-sm text-muted-foreground/80">
-                Vote on upcoming features or suggest your own
-              </p>
-            </div>
-          </div>
-        </a>
-        <a
-          rel="noopener noreferrer"
-          className="block rounded-lg border border-secondary p-4 transition-colors hover:bg-secondary/40"
-          href="/sso/featurebase"
-          target="_blank"
-        >
-          <div className="flex items-center gap-4">
-            <Bug className="h-5 w-5 text-primary" />
-            <div>
-              <h3 className="font-medium">Found a non-critical bug?</h3>
-              <p className="text-sm text-muted-foreground/80">
-                UI glitches or formatting issues? Report them here :)
-              </p>
-            </div>
-          </div>
-        </a>
-        <a
-          href="mailto:support@ping.gg"
-          className="block rounded-lg border border-secondary p-4 transition-colors hover:bg-secondary/40"
-        >
-          <div className="flex items-center gap-4">
-            <CircleAlert className="h-5 w-5 text-primary" />
-            <div>
-              <h3 className="font-medium">Having account or billing issues?</h3>
-              <p className="text-sm text-muted-foreground/80">
-                Email us for priority support - support@ping.gg
-              </p>
-            </div>
-          </div>
-        </a>
-        <a
-          href="https://discord.gg/xHdCpcPHRE"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block rounded-lg border border-secondary p-4 transition-colors hover:bg-secondary/40"
-        >
-          <div className="flex items-center gap-4">
-            <DiscordIcon className="h-5 w-5 text-primary" />
-            <div>
-              <h3 className="font-medium">Want to join the community?</h3>
-              <p className="text-sm text-muted-foreground/80">
-                Come hang out in our Discord! Chat with the team and other users
-              </p>
-            </div>
-          </div>
-        </a>
-        <a
-          href="/privacy-policy"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block rounded-lg border border-secondary p-4 transition-colors hover:bg-secondary/40"
-        >
-          <div className="flex items-center gap-4">
-            <Shield className="h-5 w-5 text-primary" />
-            <div>
-              <h3 className="font-medium">Privacy Policy</h3>
-              <p className="text-sm text-muted-foreground/80">
-                Read our privacy policy and data handling practices
-              </p>
-            </div>
-          </div>
-        </a>
-        <a
-          href="/terms-of-service"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="block rounded-lg border border-secondary p-4 transition-colors hover:bg-secondary/40"
-        >
-          <div className="flex items-center gap-4">
-            <ScrollText className="h-5 w-5 text-primary" />
-            <div>
-              <h3 className="font-medium">Terms of Service</h3>
-              <p className="text-sm text-muted-foreground/80">
-                Review our terms of service and usage guidelines
-              </p>
-            </div>
-          </div>
-        </a>
+        {contactItems.map((item, index) => (
+          <Tooltip key={index}>
+            <TooltipTrigger asChild>
+              <div className="block cursor-not-allowed rounded-lg border border-secondary p-4 transition-colors hover:bg-secondary/40">
+                <div className="flex items-center gap-4">
+                  {item.icon}
+                  <div>
+                    <h3 className="font-medium">{item.title}</h3>
+                    <p className="text-sm text-muted-foreground/80">{item.description}</p>
+                  </div>
+                </div>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>This is a clone, no real support is provided.</p>
+            </TooltipContent>
+          </Tooltip>
+        ))}
       </div>
     </div>
   )
