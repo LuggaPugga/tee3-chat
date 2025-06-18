@@ -6,12 +6,7 @@ import path from "path"
 export default defineConfig({
   server: {
     port: 3000,
-    allowedHosts: [
-      "localhost",
-      "127.0.0.1",
-      "0.0.0.0",
-      "4eb0-2001-9e8-e21a-1a00-299-54a2-ddfe-44ce.ngrok-free.app",
-    ],
+    allowedHosts: ["localhost", "127.0.0.1", "0.0.0.0"],
   },
   resolve: {
     alias: {
