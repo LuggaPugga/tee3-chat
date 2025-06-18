@@ -48,7 +48,7 @@ export async function generateChatName(message: string, userId: string) {
       break
     }
     default:
-      throw new Error("No API key available for chat name generation")
+      return "New Chat"
   }
 
   const result = await generateText({
