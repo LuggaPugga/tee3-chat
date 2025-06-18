@@ -1,8 +1,9 @@
 import { createFileRoute, Outlet, Link, useLocation } from "@tanstack/react-router"
-import { ArrowLeft, Moon, Sun } from "lucide-react"
+import { ArrowLeft, MoonIcon, SunIcon } from "lucide-react"
 import Profile from "@/components/settings/profile"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { useTheme } from "@/components/theme-provider"
 
 export const Route = createFileRoute("/settings")({
   component: LayoutComponent,
@@ -10,7 +11,7 @@ export const Route = createFileRoute("/settings")({
 
 function LayoutComponent() {
   const location = useLocation()
-
+  const { theme, setTheme } = useTheme()
   const navigationItems = [
     { value: "account", label: "Account", href: "/settings/account" },
     { value: "customization", label: "Customization", href: "/settings/customization" },
@@ -46,18 +47,24 @@ function LayoutComponent() {
             </Button>
           </Link>
           <div className="flex flex-row items-center gap-2">
-            <button
-              className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-muted/40 hover:text-foreground disabled:hover:bg-transparent disabled:hover:text-foreground/50 group relative size-8"
-              tabIndex={-1}
-              data-state="closed"
+            <Button
+              variant="ghost"
+              size="icon"
+              className="z-10 h-8 w-8 text-muted-foreground"
+              onClick={() =>
+                setTheme(
+                  theme === "dark"
+                    ? "light"
+                    : theme === "light"
+                      ? "dark"
+                      : theme === "boring-dark"
+                        ? "boring-light"
+                        : "boring-dark"
+                )
+              }
             >
-              <Moon className="absolute size-4 transition-all duration-200 -rotate-90 scale-0" />
-              <Sun className="absolute size-4 transition-all duration-200 rotate-0 scale-100" />
-              <span className="sr-only">Toggle theme</span>
-            </button>
-            <button className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:text-foreground disabled:hover:bg-transparent disabled:hover:text-foreground/50 h-9 px-4 py-2 hover:bg-muted/40">
-              Sign out
-            </button>
+              {(theme === "dark" || theme === "boring-dark") ? <SunIcon /> : <MoonIcon />}
+            </Button>
           </div>
         </header>
 

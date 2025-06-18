@@ -64,14 +64,14 @@ export function CollapsedMenuRight() {
               ? "light"
               : theme === "light"
                 ? "dark"
-                : theme === "boring-light"
-                  ? "boring-dark"
-                  : "boring-light"
+                : theme === "boring-dark"
+                  ? "boring-light"
+                  : "boring-dark"
           )
         }
       >
-        {theme === "dark" ? <SunIcon /> : <MoonIcon />}
-      </Button>
+        {theme === "dark" || theme === "boring-dark" ? <SunIcon /> : <MoonIcon />}
+      </Button>{" "}
     </div>
   )
 }
