@@ -10,7 +10,7 @@ export default function ChatLayout({ children }: { children: React.ReactNode }) 
 
   return (
     <>
-      <SearchCommandMenu/>
+      <SearchCommandMenu />
       <div className="inset-0 dark:bg-sidebar !fixed z-0 boring:hidden">
         <div
           className="absolute inset-0 opacity-40 light:hidden"
@@ -51,6 +51,7 @@ export default function ChatLayout({ children }: { children: React.ReactNode }) 
 
             <div
               className={cn("absolute inset-0 overflow-y-scroll z-30", open && "sm:pt-3.5")}
+              id="chat-scroll-area"
               style={{
                 paddingBottom: "144px",
                 scrollbarGutter: "stable both-edges",

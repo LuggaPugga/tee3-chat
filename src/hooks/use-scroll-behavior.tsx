@@ -4,26 +4,35 @@ export function useScrollBehavior(chatId?: string) {
   const [showScrollButton, setShowScrollButton] = useState(false)
   const [hasInitialScroll, setHasInitialScroll] = useState(false)
   const lastChatIdRef = useRef<string | undefined>(chatId)
+  const scrollContainerRef = useRef<HTMLElement | null>(null)
+
+  useEffect(() => {
+    scrollContainerRef.current = document.getElementById("chat-scroll-area")
+  }, [])
 
   const scrollToBottom = useCallback(() => {
-    window.scrollTo({
-      top: document.body.scrollHeight,
-      behavior: "smooth",
-    })
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo({
+        top: scrollContainerRef.current.scrollHeight,
+        behavior: "smooth",
+      })
+    }
   }, [])
 
   const scrollToBottomInstant = useCallback(() => {
-    window.scrollTo({
-      top: document.body.scrollHeight,
-      behavior: "instant",
-    })
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo({
+        top: scrollContainerRef.current.scrollHeight,
+        behavior: "instant",
+      })
+    }
   }, [])
 
   const checkScrollPosition = useCallback(() => {
-    const { scrollY, innerHeight } = window
-    const { scrollHeight } = document.body
-    const isAtBottom = scrollY + innerHeight >= scrollHeight - 120
-    const hasScroll = scrollHeight > innerHeight + 50
+    if (!scrollContainerRef.current) return
+    const { scrollTop, scrollHeight, clientHeight } = scrollContainerRef.current
+    const isAtBottom = scrollTop + clientHeight >= scrollHeight - 120
+    const hasScroll = scrollHeight > clientHeight + 50
     setShowScrollButton(!isAtBottom && hasScroll)
   }, [])
 
@@ -37,30 +46,32 @@ export function useScrollBehavior(chatId?: string) {
 
   const handleInitialScroll = useCallback(
     (hasMessages: boolean) => {
-      if (!hasInitialScroll && hasMessages && chatId) {
+      if (!hasInitialScroll && hasMessages) {
         setHasInitialScroll(true)
-
         scrollToBottomInstant()
         checkScrollPosition()
       }
     },
-    [hasInitialScroll, scrollToBottomInstant, checkScrollPosition, chatId]
+    [hasInitialScroll, scrollToBottomInstant, checkScrollPosition]
   )
 
   useEffect(() => {
+    const scrollContainer = scrollContainerRef.current
+    if (!scrollContainer) return
+
     let scrollTimeout: NodeJS.Timeout
 
     const debouncedScrollCheck = () => {
       clearTimeout(scrollTimeout)
-      scrollTimeout = setTimeout(checkScrollPosition, 100) // Increased debounce time
+      scrollTimeout = setTimeout(checkScrollPosition, 100)
     }
 
-    window.addEventListener("scroll", debouncedScrollCheck, { passive: true })
+    scrollContainer.addEventListener("scroll", debouncedScrollCheck, { passive: true })
     window.addEventListener("resize", checkScrollPosition, { passive: true })
 
     return () => {
       clearTimeout(scrollTimeout)
-      window.removeEventListener("scroll", debouncedScrollCheck)
+      scrollContainer.removeEventListener("scroll", debouncedScrollCheck)
       window.removeEventListener("resize", checkScrollPosition)
     }
   }, [checkScrollPosition])
