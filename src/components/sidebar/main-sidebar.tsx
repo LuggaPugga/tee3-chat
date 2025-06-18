@@ -8,11 +8,11 @@ import { db } from "@/utils/instant"
 export default function MainSidebar() {
   const [search, setSearch] = useState("")
   const auth = db.useAuth()
-  
+
   const { data } = db.useQuery({
     preferences: {
       $: {
-        where: { user: auth.user!.id! },
+        where: { ...(auth.user?.id && { user: auth.user.id }) },
       },
     },
   })
