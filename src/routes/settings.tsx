@@ -1,5 +1,5 @@
 import { createFileRoute, Outlet, Link, useLocation, useNavigate } from "@tanstack/react-router"
-import { ArrowLeft, MoonIcon, SunIcon } from "lucide-react"
+import { ArrowLeft, MoonIcon, SunIcon, SunMoon } from "lucide-react"
 import Profile from "@/components/settings/profile"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
@@ -61,20 +61,39 @@ function LayoutComponent() {
               variant="ghost"
               size="icon"
               className="z-10 h-8 w-8 text-muted-foreground"
-              onClick={() =>
-                setTheme(
-                  theme === "dark"
-                    ? "light"
-                    : theme === "light"
-                      ? "dark"
-                      : theme === "boring-dark"
-                        ? "boring-light"
-                        : "boring-dark"
-                )
-              }
+              onClick={() => {
+                switch (theme) {
+                  case "system": {
+                    const isDark =
+                      window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+                    setTheme(isDark ? "light" : "dark")
+                    break
+                  }
+                  case "dark":
+                    setTheme("light")
+                    break
+                  case "light":
+                    setTheme("dark")
+                    break
+                  case "boring-dark":
+                    setTheme("boring-light")
+                    break
+                  case "boring-light":
+                    setTheme("light")
+                    break
+                  default:
+                    break
+                }
+              }}
             >
-              {theme === "dark" || theme === "boring-dark" ? <SunIcon /> : <MoonIcon />}
-            </Button>
+              {theme === "system" ? (
+                <SunMoon className="size-4" />
+              ) : theme === "dark" || theme === "boring-dark" ? (
+                <SunIcon className="size-4" />
+              ) : (
+                <MoonIcon className="size-4" />
+              )}
+            </Button>{" "}
             <Button
               variant="ghost"
               className="hover:bg-muted/40"

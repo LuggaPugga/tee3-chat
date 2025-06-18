@@ -1,6 +1,6 @@
 import { SidebarTrigger, useSidebar } from "@/components/ui/sidebar"
 import { Button } from "../ui/button"
-import { PlusIcon, SearchIcon, Settings2 } from "lucide-react"
+import { PlusIcon, SearchIcon, Settings2, SunMoon } from "lucide-react"
 import { MoonIcon, SunIcon } from "lucide-react"
 import { useRouter } from "@tanstack/react-router"
 import { Link } from "@tanstack/react-router"
@@ -58,19 +58,38 @@ export function CollapsedMenuRight() {
         variant="ghost"
         size="icon"
         className="z-10 h-8 w-8 text-muted-foreground"
-        onClick={() =>
-          setTheme(
-            theme === "dark"
-              ? "light"
-              : theme === "light"
-                ? "dark"
-                : theme === "boring-dark"
-                  ? "boring-light"
-                  : "boring-dark"
-          )
-        }
+        onClick={() => {
+          switch (theme) {
+            case "system": {
+              const isDark =
+                window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches
+              setTheme(isDark ? "light" : "dark")
+              break
+            }
+            case "dark":
+              setTheme("light")
+              break
+            case "light":
+              setTheme("dark")
+              break
+            case "boring-dark":
+              setTheme("boring-light")
+              break
+            case "boring-light":
+              setTheme("light")
+              break
+            default:
+              break
+          }
+        }}
       >
-        {theme === "dark" || theme === "boring-dark" ? <SunIcon /> : <MoonIcon />}
+        {theme === "system" ? (
+          <SunMoon className="size-4" />
+        ) : theme === "dark" || theme === "boring-dark" ? (
+          <SunIcon className="size-4" />
+        ) : (
+          <MoonIcon className="size-4" />
+        )}
       </Button>{" "}
     </div>
   )
