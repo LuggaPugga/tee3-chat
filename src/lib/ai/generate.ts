@@ -354,26 +354,27 @@ export const genAIResponse = createServerFn({ method: "POST", response: "raw" })
         )
       },
 
-      onFinish: async (message) => {
-        const googleMetadata = message.providerMetadata?.google as
+      onFinish: async ({ usage, text, reasoning, providerMetadata }) => {
+        const googleMetadata = providerMetadata?.google as
           | GoogleGenerativeAIProviderMetadata
           | undefined
         const groundingMetadata = googleMetadata?.groundingMetadata
 
         const requestDuration = Date.now() - startTime
+        console.log(usage)
         await db.transact(
           db.tx.messages[assistantMessageId]
             .update({
               status: signal?.aborted ? "cancelled" : "completed",
-              content: message.text,
-              thinking_text: message.reasoning,
+              content: text,
+              thinking_text: reasoning,
               updated_at: new Date().toISOString(),
               created_at: new Date().toISOString(),
               role: "assistant",
               model: data.model,
               grounding_data: groundingMetadata,
-              tokens_used: message.usage.totalTokens,
-              tokens_per_second: message.usage.totalTokens / (requestDuration / 1000),
+              tokens_used: usage.totalTokens,
+              tokens_per_second: usage.totalTokens / (requestDuration / 1000),
               request_duration_ms: requestDuration,
             })
             .link({ chat: data.chatId })
