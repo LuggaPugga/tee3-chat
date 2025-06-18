@@ -208,29 +208,31 @@ const ChatItem = memo(({ chat, isActive }: { chat: EnrichedChat; isActive: boole
               </TooltipContent>
             </Tooltip>
 
-            <div className="pointer-events-auto absolute -right-1 bottom-0 top-0 z-50 flex translate-x-full items-center justify-end text-muted-foreground transition-transform group-hover/link:translate-x-0 group-hover/link:bg-sidebar-accent">
-              <div className="pointer-events-none absolute bottom-0 right-[100%] top-0 h-12 w-8 bg-gradient-to-l from-sidebar-accent to-transparent opacity-0 group-hover/link:opacity-100"></div>
-              <button
-                className="rounded-md p-1.5 hover:bg-muted/40"
-                tabIndex={-1}
-                onClick={togglePin}
-                aria-label={chat.pinned ? "Unpin thread" : "Pin thread"}
-              >
-                {chat.pinned ? <PinOffIcon className="size-4" /> : <PinIcon className="size-4" />}
-              </button>
-              <DeleteChat threadName={chat.name} threadId={chat.id}>
-                <div>
-                  <button
-                    className="rounded-md p-1.5 hover:bg-destructive/50 hover:text-destructive-foreground pointer-events-auto"
-                    tabIndex={-1}
-                    data-action="thread-delete"
-                    aria-label="Delete thread"
-                  >
-                    <XIcon className="size-4" />
-                  </button>
-                </div>
-              </DeleteChat>
-            </div>
+            {!isEditing && (
+              <div className="pointer-events-auto absolute -right-1 bottom-0 top-0 z-50 flex translate-x-full items-center justify-end text-muted-foreground transition-transform group-hover/link:translate-x-0 group-hover/link:bg-sidebar-accent">
+                <div className="pointer-events-none absolute bottom-0 right-[100%] top-0 h-12 w-8 bg-gradient-to-l from-sidebar-accent to-transparent opacity-0 group-hover/link:opacity-100"></div>
+                <button
+                  className="rounded-md p-1.5 hover:bg-muted/40"
+                  tabIndex={-1}
+                  onClick={togglePin}
+                  aria-label={chat.pinned ? "Unpin thread" : "Pin thread"}
+                >
+                  {chat.pinned ? <PinOffIcon className="size-4" /> : <PinIcon className="size-4" />}
+                </button>
+                <DeleteChat threadName={chat.name} threadId={chat.id}>
+                  <div>
+                    <button
+                      className="rounded-md p-1.5 hover:bg-destructive/50 hover:text-destructive-foreground pointer-events-auto"
+                      tabIndex={-1}
+                      data-action="thread-delete"
+                      aria-label="Delete thread"
+                    >
+                      <XIcon className="size-4" />
+                    </button>
+                  </div>
+                </DeleteChat>
+              </div>
+            )}
           </div>
         </Link>
       </SidebarMenuButton>
