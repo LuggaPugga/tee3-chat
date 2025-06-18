@@ -1,7 +1,8 @@
+import { cn } from "@/lib/utils"
 import { SidebarInset, useSidebar } from "@/components/ui/sidebar"
-import { Curve } from "@/components/sidebar/curve"
 import MainSidebar from "@/components/sidebar/main-sidebar"
 import CollapsedMenu, { CollapsedMenuRight } from "../sidebar/collapsed-menu"
+import { Curve } from "../sidebar/curve"
 
 export default function ChatLayout({ children }: { children: React.ReactNode }) {
   const { open } = useSidebar()
@@ -29,28 +30,33 @@ export default function ChatLayout({ children }: { children: React.ReactNode }) 
 
       <MainSidebar />
 
-      <main className="min-h-pwa relative flex w-full flex-1 flex-col transition-[width,height]">
+      <main className="min-h-pwa relative flex w-full flex-1 flex-col transition-[width,height] overflow-hidden">
         <SidebarInset className="flex-1 bg-transparent">
           <CollapsedMenu />
           <CollapsedMenuRight />
-          <div className="absolute bottom-0 top-0 w-full overflow-hidden border-l border-t border-chat-border bg-chat-background bg-fixed pb-[140px] transition-all ease-snappy max-sm:border-none open:sm:translate-y-3.5 sm:rounded-tl-xl">
+          <div
+            className={cn(
+              "absolute bottom-0 top-0 w-full overflow-hidden border-chat-border bg-chat-background bg-fixed pb-[140px] transition-all ease-snappy max-sm:border-none",
+              open && "border-l border-t sm:translate-y-3.5 sm:rounded-tl-xl"
+            )}
+          >
             <div className="bg-noise absolute inset-0 -top-3.5 bg-fixed transition-transform ease-snappy [background-position:right_bottom]"></div>
           </div>
 
-          {open && (
-            <>
-              <div className="sticky inset-x-3 top-0 z-10 box-content overflow-hidden border-b border-chat-border bg-gradient-noise-top/80 backdrop-blur-md transition-[transform,border] ease-snappy blur-fallback:bg-gradient-noise-top max-sm:hidden sm:h-3.5">
-                <div className="absolute left-0 top-0 h-full w-8 bg-gradient-to-r from-gradient-noise-top to-transparent blur-fallback:hidden"></div>
-                <div className="absolute right-24 top-0 h-full w-8 bg-gradient-to-l from-gradient-noise-top to-transparent blur-fallback:hidden"></div>
-                <div className="absolute right-0 top-0 h-full w-24 bg-gradient-noise-top blur-fallback:hidden"></div>
-              </div>
+          {open}
+          <div className="absolute bottom-0 top-0 w-full">
+            {open && <Curve />}
 
-              <div className="absolute top-0 w-full">
-                <Curve />
-              </div>
-            </>
-          )}
-          <div className="relative z-10">{children}</div>
+            <div
+              className={cn("absolute inset-0 overflow-y-scroll z-30", open && "sm:pt-3.5")}
+              style={{
+                paddingBottom: "144px",
+                scrollbarGutter: "stable both-edges",
+              }}
+            >
+              {children}
+            </div>
+          </div>
         </SidebarInset>
       </main>
     </>
