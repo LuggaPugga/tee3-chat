@@ -20,6 +20,7 @@ interface ChatProps {
   chatId?: string
   preSubmit?: (input: string, model: string) => Promise<string | void> | string | void
   className?: string
+  initialMessage?: string
 }
 
 const getLastSelectedModel = (): Model => {
@@ -39,7 +40,7 @@ const saveLastSelectedModel = (modelId: string) => {
   }
 }
 
-export default function Chat({ chatId, preSubmit }: ChatProps) {
+export default function Chat({ chatId, preSubmit, initialMessage }: ChatProps) {
   const [model, setModel] = useState<Model>(() => {
     if (typeof window !== "undefined" && !chatId) {
       return getLastSelectedModel()
@@ -49,6 +50,7 @@ export default function Chat({ chatId, preSubmit }: ChatProps) {
   const [reasoningEffort, setReasoningEffort] = useState<"low" | "medium" | "high">("low")
   const [isSearchEnabled, setIsSearchEnabled] = useState(false)
   const [input, setInput] = useState("")
+  const [hasAutoSubmitted, setHasAutoSubmitted] = useState(false)
 
   const fileUpload = useFileUpload()
   const { showDropOverlay } = useDragAndDrop(fileUpload.addFiles)
@@ -152,6 +154,20 @@ export default function Chat({ chatId, preSubmit }: ChatProps) {
       chatActions.setOptimisticMessage(null)
     }
   }, [messagesForRendering, chatActions.optimisticMessage, chatActions.setOptimisticMessage])
+
+  useEffect(() => {
+    if (initialMessage && !hasAutoSubmitted && chatId && !isLoading && !chatActions.isStreaming) {
+      setHasAutoSubmitted(true)
+      chatActions.handleChatSubmit(initialMessage, () => {})
+    }
+  }, [
+    initialMessage,
+    hasAutoSubmitted,
+    chatId,
+    isLoading,
+    chatActions.isStreaming,
+    chatActions.handleChatSubmit,
+  ])
 
   const handleChatSubmit = (e?: { preventDefault?: () => void }) => {
     const hasValidInput = input.trim() || fileUpload.selectedFiles.length > 0
