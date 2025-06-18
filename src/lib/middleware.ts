@@ -1,13 +1,7 @@
 import { db } from "@/utils/instant"
-import { init } from "@instantdb/admin"
-import { createMiddleware } from "@tanstack/react-start"
-import schema from "instant.schema"
+import { db as adminDb } from "@/utils/instant-admin"
 
-const adminDb = init({
-  appId: "d93ce927-79f1-4dd7-8618-df5668c4f0f7",
-  adminToken: process.env.INSTANT_DB_ADMIN_TOKEN || "",
-  schema: schema,
-})
+import { createMiddleware } from "@tanstack/react-start"
 
 const authMiddleware = createMiddleware({ type: "function" })
   .client(async ({ next }) => {

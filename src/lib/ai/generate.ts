@@ -9,18 +9,12 @@ import { models } from "./models"
 import { promptBuilder } from "./prompts"
 import { createOpenAI } from "@ai-sdk/openai"
 
-import { init, id } from "@instantdb/admin"
-import schema from "instant.schema"
+import { id } from "@instantdb/admin"
 import { createOpenRouter } from "@openrouter/ai-sdk-provider"
 import { AnthropicProviderOptions, createAnthropic } from "@ai-sdk/anthropic"
 import { unhash } from "../hashing"
 import authMiddleware from "@/lib/middleware"
-
-const db = init({
-  appId: "d93ce927-79f1-4dd7-8618-df5668c4f0f7",
-  adminToken: process.env.INSTANT_DB_ADMIN_TOKEN as string,
-  schema: schema,
-})
+import { db } from "@/utils/instant-admin"
 
 export interface Message {
   id: string

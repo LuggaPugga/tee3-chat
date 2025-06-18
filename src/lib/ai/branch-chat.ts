@@ -1,11 +1,7 @@
 import { createServerFn } from "@tanstack/react-start"
-import { init, id } from "@instantdb/admin"
+import { id } from "@instantdb/admin"
 import authMiddleware from "../middleware"
-
-const db = init({
-  appId: "d93ce927-79f1-4dd7-8618-df5668c4f0f7",
-  adminToken: process.env.INSTANT_DB_ADMIN_TOKEN || "",
-})
+import { db } from "@/utils/instant-admin"
 
 export const branchChat = createServerFn({ method: "POST" })
   .validator((data: { id: string; messageId: string }) => data)
@@ -41,7 +37,6 @@ export const branchChat = createServerFn({ method: "POST" })
       await db.transact([
         db.tx.messages[newMessageId].update({
           content: message.content,
-          user_name: message.user_name,
           role: message.role,
           status: message.status,
           thinking_text: message.thinking_text,

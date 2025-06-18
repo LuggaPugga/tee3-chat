@@ -1,5 +1,5 @@
 import { init } from "@instantdb/react"
 import schema from "instant.schema"
 
-const APP_ID = "d93ce927-79f1-4dd7-8618-df5668c4f0f7"
+const APP_ID = import.meta.env.VITE_INSTANT_APP_ID
 export const db = init({ appId: APP_ID, schema })
