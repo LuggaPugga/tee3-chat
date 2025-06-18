@@ -141,12 +141,12 @@ export default function ChatMessage({
           <div
             role="article"
             aria-label={`${message.role === "user" ? "Your" : "Assistant"} message`}
-            className={`group relative inline-block max-w-full break-words rounded-xl ${
+            className={`group relative break-words rounded-xl ${
               message.role === "user"
                 ? isEditing
                   ? "border px-4 py-3 text-left w-full border-chat-border/70 bg-gradient-noise-top/50 shadow-[inset_0px_4px_6px_#000] shadow-foreground/10 dark:border-foreground/5 dark:shadow-black/20"
-                  : "bg-secondary/50 px-4 py-3 ml-auto"
-                : "px-1 mr-auto"
+                  : "inline-block max-w-full bg-secondary/50 px-4 py-3 ml-auto"
+                : "w-full px-1"
             }`}
           >
             <span className="sr-only">
