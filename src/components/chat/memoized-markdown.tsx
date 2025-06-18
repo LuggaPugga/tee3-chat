@@ -1,117 +1,10 @@
-import { memo, useState, useEffect } from "react"
-import ReactMarkdown from "react-markdown"
-import { codeToHtml } from "shiki"
-import { Copy, Check, Download, Text, WrapText } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { t3DarkTheme, t3LightTheme } from "@/lib/shiki-theme"
+import { memo } from "react"
+import ReactMarkdown, { type Components } from "react-markdown"
+import remarkGfm from "remark-gfm"
+import CustomCodeBlock from "./custom-code-block"
+import CustomTable from "./custom-table"
 
-interface CustomCodeBlockProps {
-  language: string
-  code: string
-}
-
-const CustomCodeBlock = memo(({ language, code }: CustomCodeBlockProps) => {
-  const [highlightedCode, setHighlightedCode] = useState<string>("")
-  const [copied, setCopied] = useState(false)
-  const [textWrap, setTextWrap] = useState(false)
-
-  useEffect(() => {
-    const highlightCode = async () => {
-      try {
-        const html = await codeToHtml(code, {
-          lang: language || "text",
-          themes: {
-            light: t3LightTheme,
-            dark: t3DarkTheme,
-          },
-        })
-        setHighlightedCode(html)
-      } catch {
-        const html = await codeToHtml(code, {
-          lang: "text",
-          themes: {
-            light: t3LightTheme,
-            dark: t3DarkTheme,
-          },
-        })
-        setHighlightedCode(html)
-      }
-    }
-
-    highlightCode()
-  }, [code, language])
-
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(code)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 1500)
-  }
-
-  const downloadCode = () => {
-    const blob = new Blob([code], { type: "text/plain" })
-    const url = URL.createObjectURL(blob)
-    const a = document.createElement("a")
-    a.href = url
-    a.download = `file.${language}`
-    a.click()
-    URL.revokeObjectURL(url)
-  }
-
-  const toggleTextWrap = () => {
-    setTextWrap(!textWrap)
-  }
-
-  return (
-    <div className="relative mt-2 flex w-full flex-col pt-9">
-      <div className="absolute inset-x-0 top-0 flex h-9 items-center justify-between rounded-t bg-secondary px-4 py-2 text-sm text-secondary-foreground">
-        <span className="text-sm text-secondary-foreground font-mono">{language || "text"}</span>
-        <div>
-          <Button variant="ghost" size="icon" onClick={downloadCode}>
-            <Download />
-          </Button>
-          <Button variant="ghost" size="icon" onClick={toggleTextWrap}>
-            {textWrap ? (
-              <WrapText className="transition-all duration-200 ease-in-out" />
-            ) : (
-              <Text className="transition-all duration-200 ease-in-out" />
-            )}
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => {
-              copyToClipboard()
-            }}
-            aria-label="Copy code"
-          >
-            <div className="relative h-4 w-4">
-              <Check
-                className={`absolute h-4 w-4 transition-all duration-100 ease-[cubic-bezier(0.2,0.4,0.1,0.95)] ${
-                  copied ? "scale-100 opacity-100" : "scale-0 opacity-0"
-                }`}
-              />
-              <Copy
-                className={`absolute h-4 w-4 transition-all duration-100 ease-[cubic-bezier(0.2,0.4,0.1,0.95)] ${
-                  copied ? "scale-0 opacity-0" : "scale-100 opacity-100"
-                }`}
-              />
-            </div>
-          </Button>
-        </div>
-      </div>
-      <div
-        className={`overflow-x-auto [&>pre]:!bg-chat-accent  [&>pre]:!m-0 [&>pre]:!rounded-none [&>pre]:!p-4 [&>pre]:text-sm not-prose ${
-          textWrap ? "[&>pre]:whitespace-pre-wrap" : ""
-        }`}
-        dangerouslySetInnerHTML={{ __html: highlightedCode }}
-      />
-    </div>
-  )
-})
-
-CustomCodeBlock.displayName = "CustomCodeBlock"
-
-const components = {
+const components: Components = {
   code: ({ inline, className, children }: any) => {
     const match = /language-(\w+)/.exec(className || "")
     const language = match ? match[1] : ""
@@ -129,11 +22,36 @@ const components = {
       </code>
     )
   },
+  table: (props) => <CustomTable {...props} />,
+  thead: ({ ...props }) => <thead className="rounded-t-lg [&_tr]:border-b" {...props} />,
+  tbody: ({ ...props }) => <tbody className="[&_tr:last-child]:border-0" {...props} />,
+  tr: ({ ...props }) => (
+    <tr
+      className="border-b border-border transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted"
+      {...props}
+    />
+  ),
+  th: ({ ...props }) => (
+    <th
+      className="sticky top-0 z-[5] h-10 bg-chat-background px-2 py-2 text-left align-middle text-sm font-medium text-foreground first:pl-4"
+      {...props}
+    />
+  ),
+  td: ({ ...props }) => (
+    <td
+      className="max-w-[40ch] overflow-hidden text-ellipsis whitespace-nowrap p-2 align-top text-sm first:pl-4 last:max-w-[65ch]"
+      {...props}
+    />
+  ),
 }
 
 const MemoizedMarkdownBlock = memo(
   ({ content }: { content: string }) => {
-    return <ReactMarkdown components={components}>{content}</ReactMarkdown>
+    return (
+      <ReactMarkdown components={components} remarkPlugins={[remarkGfm]}>
+        {content}
+      </ReactMarkdown>
+    )
   },
   (prevProps, nextProps) => {
     if (prevProps.content !== nextProps.content) return false
