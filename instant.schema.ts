@@ -3,7 +3,7 @@
 import { i } from "@instantdb/react"
 
 const _schema = i.schema({
-  // We inferred 2 attributes!
+  // We inferred 3 attributes!
   // Take a look at this schema, and if everything looks good,
   // run `push schema` again to enforce the types.
   entities: {
@@ -17,40 +17,40 @@ const _schema = i.schema({
     apiKeys: i.entity({
       key: i.string().unique().indexed(),
       model: i.string().optional(),
-      provider: i.string().optional().indexed(),
+      provider: i.string().indexed().optional(),
     }),
     chats: i.entity({
       branch_from: i.string().optional(),
       created_at: i.date(),
       model: i.string().optional(),
-      name: i.string().optional().indexed(),
+      name: i.string().indexed().optional(),
       pinned: i.boolean().optional(),
-      updated_at: i.date(),
+      updated_at: i.date().indexed(),
     }),
     messages: i.entity({
       content: i.string().optional(),
       created_at: i.date(),
+      error: i.string().optional(),
       grounding_data: i.json().optional(),
       model: i.string().optional(),
+      request_duration_ms: i.number().optional(),
       role: i.string().optional(),
       status: i.string().optional(),
       thinking_text: i.string().optional(),
       tokens_per_second: i.number().optional(),
       tokens_used: i.number().optional(),
-      request_duration_ms: i.number().optional(),
       updated_at: i.date(),
-      error: i.string().optional(),
     }),
     preferences: i.entity({
-      name: i.string().optional().indexed(),
-      pinned_models: i.json().optional(),
-      what_do_you_do: i.string().optional(),
-      traits: i.json().optional(),
       knowledge: i.string().optional(),
+      name: i.string().indexed().optional(),
+      pinned_models: i.json().optional(),
+      traits: i.json().optional(),
+      what_do_you_do: i.string().optional(),
     }),
     usage: i.entity({
-      premium: i.number().optional().indexed(),
-      standard: i.number().optional().indexed(),
+      premium: i.number().indexed().optional(),
+      standard: i.number().indexed().optional(),
     }),
   },
   links: {
