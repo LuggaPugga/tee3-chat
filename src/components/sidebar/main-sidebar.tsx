@@ -22,7 +22,7 @@ export default function MainSidebar() {
         <Search search={search} setSearch={setSearch} />
       </SidebarHeader>
       <SidebarContent className="flex min-h-0 flex-1 flex-col gap-2 overflow-auto group-data-[collapsible=icon]:overflow-hidden small-scrollbar scroll-shadow relative pb-2">
-        <ChatsList />
+        <ChatsList search={search} />
       </SidebarContent>
       <SidebarFooter className="flex flex-col  justify-end mt-auto">
         {auth.user?.id && !auth.isLoading ? (
@@ -41,7 +41,7 @@ export default function MainSidebar() {
           </Link>
         ) : (
           <Link
-            to="/login"
+            to="/"
             className="flex w-full select-none items-center gap-4 rounded-lg p-4 text-muted-foreground hover:bg-sidebar-accent"
           >
             Login
