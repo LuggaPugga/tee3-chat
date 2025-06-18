@@ -33,7 +33,6 @@ export default function ChatLayout({ children }: { children: React.ReactNode }) 
       <main className="min-h-pwa relative flex w-full flex-1 flex-col transition-[width,height] overflow-hidden">
         <SidebarInset className="flex-1 bg-transparent">
           <CollapsedMenu />
-          <CollapsedMenuRight />
           <div
             className={cn(
               "absolute bottom-0 top-0 w-full overflow-hidden border-chat-border bg-chat-background bg-fixed pb-[140px] transition-all ease-snappy max-sm:border-none",
@@ -45,8 +44,10 @@ export default function ChatLayout({ children }: { children: React.ReactNode }) 
 
           {open}
           <div className="absolute bottom-0 top-0 w-full">
-            {open && <Curve />}
-
+            <div className="fixed right-0 top-0 z-20 h-16 w-28 max-sm:hidden">
+              {open && <Curve />}
+              <CollapsedMenuRight />
+            </div>
             <div
               className={cn("absolute inset-0 overflow-y-scroll z-30", open && "sm:pt-3.5")}
               id="chat-scroll-area"

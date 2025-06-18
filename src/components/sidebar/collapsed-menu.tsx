@@ -47,7 +47,7 @@ export function CollapsedMenuRight() {
   return (
     <div className="fixed right-2 z-50 flex flex-row gap-0.5 p-1 mt-2">
       {!open && (
-        <div className="absolute inset-0 right-auto -z-10 rounded-md backdrop-blur-sm transition-[background-color,width] delay-125 duration-125 w-[6.75rem] bg-sidebar/50 blur-fallback:bg-sidebar max-sm:delay-125 max-sm:duration-125 max-sm:w-[6.75rem] max-sm:bg-sidebar/50"></div>
+        <div className="absolute inset-0 right-auto -z-10 rounded-md backdrop-blur-sm transition-[background-color,width] delay-125 duration-125 w-[4.625rem] bg-sidebar/50 blur-fallback:bg-sidebar max-sm:delay-125 max-sm:duration-125 max-sm:w-[4.625rem] max-sm:bg-sidebar/50"></div>
       )}
       <Link to="/settings">
         <Button variant="ghost" size="icon" className="z-10 h-8 w-8 text-muted-foreground">
