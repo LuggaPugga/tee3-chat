@@ -1,7 +1,7 @@
 import { SidebarMenuItem, SidebarMenuButton } from "../ui/sidebar"
 import { Link } from "@tanstack/react-router"
 import { GitBranchIcon, PinIcon, PinOffIcon, XIcon, TextCursor, Download } from "lucide-react"
-import { memo, useState, useRef, useEffect } from "react"
+import { memo, useState, useRef, useCallback } from "react"
 import { db } from "@/utils/instant"
 import DeleteChat from "../delete-chat"
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip"
@@ -20,40 +20,51 @@ export const ChatItem = memo(({ chat, isActive }: { chat: EnrichedChat; isActive
   const [editValue, setEditValue] = useState(chat.name)
   const inputRef = useRef<HTMLInputElement>(null)
 
-  useEffect(() => {
-    if (isEditing && inputRef.current) {
-      inputRef.current.focus()
-      inputRef.current.select()
-    }
-  }, [isEditing])
-
-  const handleTogglePin = async () => {
+  const handleTogglePin = useCallback(async () => {
     await db.transact([
       db.tx.chats[chat.id].update({
         pinned: !chat.pinned,
       }),
     ])
-  }
+  }, [chat.id, chat.pinned])
 
-  const onPinButtonClick = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    handleTogglePin()
-  }
+  const onPinButtonClick = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault()
+      e.stopPropagation()
+      handleTogglePin()
+    },
+    [handleTogglePin]
+  )
 
-  const handleDoubleClick = (e: React.MouseEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
+  const handleDoubleClick = useCallback(
+    (e: React.MouseEvent) => {
+      e.preventDefault()
+      e.stopPropagation()
+      setIsEditing(true)
+      setEditValue(chat.name)
+      setTimeout(() => {
+        if (inputRef.current) {
+          inputRef.current.focus()
+          inputRef.current.select()
+        }
+      }, 0)
+    },
+    [chat.name]
+  )
+
+  const handleRename = useCallback(() => {
     setIsEditing(true)
     setEditValue(chat.name)
-  }
+    setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus()
+        inputRef.current.select()
+      }
+    }, 0)
+  }, [chat.name])
 
-  const handleRename = () => {
-    setIsEditing(true)
-    setEditValue(chat.name)
-  }
-
-  const handleSave = async () => {
+  const handleSave = useCallback(async () => {
     if (editValue.trim() && editValue.trim() !== chat.name) {
       await db.transact([
         db.tx.chats[chat.id].update({
@@ -62,26 +73,29 @@ export const ChatItem = memo(({ chat, isActive }: { chat: EnrichedChat; isActive
       ])
     }
     setIsEditing(false)
-  }
+  }, [editValue, chat.name, chat.id])
 
-  const handleCancel = () => {
+  const handleCancel = useCallback(() => {
     setEditValue(chat.name)
     setIsEditing(false)
-  }
+  }, [chat.name])
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter") {
-      e.preventDefault()
-      handleSave()
-    } else if (e.key === "Escape") {
-      e.preventDefault()
-      handleCancel()
-    }
-  }
+  const handleKeyDown = useCallback(
+    (e: React.KeyboardEvent) => {
+      if (e.key === "Enter") {
+        e.preventDefault()
+        handleSave()
+      } else if (e.key === "Escape") {
+        e.preventDefault()
+        handleCancel()
+      }
+    },
+    [handleSave, handleCancel]
+  )
 
-  const handleBlur = () => {
+  const handleBlur = useCallback(() => {
     handleSave()
-  }
+  }, [handleSave])
 
   return (
     <ContextMenu>
