@@ -19,6 +19,7 @@ interface UseChatActionsProps {
     setUploadingFiles: (uploading: boolean) => void
     clearFiles: () => void
   }
+  messagesForRendering: Message[]
 }
 
 export function useChatActions({
@@ -28,6 +29,7 @@ export function useChatActions({
   isSearchEnabled,
   preSubmit,
   fileUpload,
+  messagesForRendering,
 }: UseChatActionsProps) {
   const {
     streamingMessage,
@@ -57,6 +59,12 @@ export function useChatActions({
 
     previousChatIdRef.current = chatId
   }, [chatId])
+
+  useEffect(() => {
+    if (optimisticMessage && messagesForRendering.some((msg) => msg.id === optimisticMessage?.id)) {
+      setOptimisticMessage(null)
+    }
+  }, [messagesForRendering, optimisticMessage])
 
   const handleAIResponse = async (
     input: string,
