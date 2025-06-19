@@ -27,17 +27,23 @@ export default function Wordmark({ setInput }: WordmarkProps) {
       setTimeout(() => {
         const selection = window.getSelection()
         if (selection && selection.toString().trim()) {
-          const text = selection.toString().trim()
-          setSelectedText(text)
-
           const range = selection.getRangeAt(0)
-          const rects = range.getClientRects()
-          const lastRect = rects[rects.length - 1]
-          setWordmarkPosition({
-            x: lastRect.right,
-            y: lastRect.bottom + 5,
-          })
-          setShowWordmark(true)
+          const container = range.commonAncestorContainer
+          const element =
+            container.nodeType === Node.TEXT_NODE ? container.parentElement : (container as Element)
+
+          if (element?.closest(".prose.prose-pink")) {
+            const text = selection.toString().trim()
+            setSelectedText(text)
+
+            const rects = range.getClientRects()
+            const lastRect = rects[rects.length - 1]
+            setWordmarkPosition({
+              x: lastRect.right,
+              y: lastRect.bottom + 5,
+            })
+            setShowWordmark(true)
+          }
         }
       }, 10)
     }
