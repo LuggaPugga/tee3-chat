@@ -10,16 +10,11 @@ import { MemoizedMarkdown } from "@/components/chat/memoized-markdown"
 interface ReasoningSummaryProps {
   content: string
   defaultOpen?: boolean
-  className?: string
 }
 
-export function ReasoningSummary({
-  content,
-  defaultOpen = false,
-  className = "",
-}: ReasoningSummaryProps) {
+export function ReasoningSummary({ content, defaultOpen = false }: ReasoningSummaryProps) {
   return (
-    <div className={`max-w-full mb-4 ${className}`}>
+    <div className={`max-w-full mb-4`}>
       <Accordion
         type="single"
         collapsible
