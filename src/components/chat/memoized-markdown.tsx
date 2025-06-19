@@ -10,7 +10,7 @@ const components: Components = {
     const language = match ? match[1] : ""
     const code = String(children).replace(/\n$/, "")
 
-    if (!inline) {
+    if (!inline && match) {
       return <CustomCodeBlock language={language} code={code} />
     }
 
