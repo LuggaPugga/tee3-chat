@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { Model, models } from "@/lib/ai/models"
 import { type Message } from "@/lib/ai/generate"
 import { InstaQLParams } from "@instantdb/react"
@@ -41,11 +41,11 @@ const saveLastSelectedModel = (modelId: string) => {
 }
 
 export default function Chat({ chatId, preSubmit, initialMessage }: ChatProps) {
-  const [model, setModel] = useState<Model>(() => {
+  const [modelId, setModelId] = useState<string>(() => {
     if (typeof window !== "undefined" && !chatId) {
-      return getLastSelectedModel()
+      return getLastSelectedModel().id
     }
-    return models[1]
+    return models[1].id
   })
   const [reasoningEffort, setReasoningEffort] = useState<"low" | "medium" | "high">("low")
   const [isSearchEnabled, setIsSearchEnabled] = useState(false)
@@ -74,33 +74,40 @@ export default function Chat({ chatId, preSubmit, initialMessage }: ChatProps) {
   } satisfies InstaQLParams<AppSchema>
   const { isLoading, data } = db.useQuery(query)
 
-  useEffect(() => {
-    if (chatId && data?.chats?.[0]?.model) {
-      const chatModel = models.find((m) => m.id === data.chats![0].model)
-      if (chatModel && chatModel.id !== model.id) {
-        setModel(chatModel)
-      }
-    } else if (!chatId) {
-      const lastModel = getLastSelectedModel()
-      if (lastModel.id !== model.id) {
-        setModel(lastModel)
-      }
+  const model = useMemo(() => {
+    const chatModel = chatId && data?.chats?.[0]?.model
+    if (chatModel) {
+      return models.find((m) => m.id === chatModel) || models[1]
     }
-  }, [chatId, data?.chats, model.id])
+    return models.find((m) => m.id === modelId) || models[1]
+  }, [chatId, data?.chats, modelId])
 
   const handleModelChange = async (newModel: Model) => {
-    setModel(newModel)
+    setModelId(newModel.id)
     saveLastSelectedModel(newModel.id)
 
     if (chatId) {
       await db.transact([
         db.tx.chats[chatId].update({
           model: newModel.id,
-          updated_at: new Date().toISOString(),
         }),
       ])
     }
   }
+
+  const messagesForRendering: Message[] = useMemo(
+    () =>
+      (data?.messages || []).map((msg: any) => ({
+        id: msg.id,
+        role: msg.role as "user" | "assistant",
+        content: msg.content || "",
+        model: msg.model || "",
+        reasoning: msg.thinking_text || "",
+        grounding_data: msg.grounding_data,
+        error: msg.error,
+      })),
+    [data?.messages]
+  )
 
   const chatActions = useChatActions({
     chatId,
@@ -109,17 +116,8 @@ export default function Chat({ chatId, preSubmit, initialMessage }: ChatProps) {
     isSearchEnabled,
     preSubmit,
     fileUpload,
+    messagesForRendering,
   })
-
-  const messagesForRendering: Message[] = (data?.messages || []).map((msg: any) => ({
-    id: msg.id,
-    role: msg.role as "user" | "assistant",
-    content: msg.content || "",
-    model: msg.model || "",
-    reasoning: msg.thinking_text || "",
-    grounding_data: msg.grounding_data,
-    error: msg.error,
-  }))
 
   const hasContent = Boolean(
     messagesForRendering.length > 0 ||
@@ -145,15 +143,6 @@ export default function Chat({ chatId, preSubmit, initialMessage }: ChatProps) {
     checkScrollPosition,
     isLoading,
   ])
-
-  useEffect(() => {
-    if (
-      chatActions.optimisticMessage &&
-      messagesForRendering.some((msg) => msg.id === chatActions.optimisticMessage?.id)
-    ) {
-      chatActions.setOptimisticMessage(null)
-    }
-  }, [messagesForRendering, chatActions.optimisticMessage, chatActions.setOptimisticMessage])
 
   useEffect(() => {
     if (initialMessage && !hasAutoSubmitted && chatId && !isLoading && !chatActions.isStreaming) {
