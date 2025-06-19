@@ -44,12 +44,8 @@ export default function ChatLayout({ children }: { children: React.ReactNode }) 
 
           {open}
           <div className="absolute bottom-0 top-0 w-full">
-            <div className="fixed right-0 top-0 z-20 h-16 w-28 max-sm:hidden">
-              {open && <Curve />}
-              <CollapsedMenuRight />
-            </div>
             <div
-              className={cn("absolute inset-0 overflow-y-scroll z-30", open && "sm:pt-3.5")}
+              className={cn("absolute inset-0 overflow-y-scroll z-50", open && "sm:pt-3.5")}
               id="chat-scroll-area"
               style={{
                 paddingBottom: "144px",
@@ -57,6 +53,14 @@ export default function ChatLayout({ children }: { children: React.ReactNode }) 
               }}
             >
               {children}
+            </div>
+            {open && (
+              <div className="fixed right-0 top-0 z-40 h-16 w-28 pointer-events-none max-sm:hidden">
+                <Curve />
+              </div>
+            )}
+            <div className="fixed right-0 top-0 z-50 h-16 w-28 max-sm:hidden">
+              <CollapsedMenuRight />
             </div>
           </div>
         </SidebarInset>
