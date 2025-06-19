@@ -1,5 +1,21 @@
 export const generateChatNamePrompt = `
-Create a short, concise human readable name (maximum 50 characters) that summarizes the following message. Return only the name, no quotes or explanation. It will be used in the UI as the chat name.
+You are tasked with generating a concise and relevant chat name based on the initial message of a conversation. This chat name should capture the essence of the conversation's topic or purpose.
+
+Here is the initial message of the chat:
+<initial_message>
+{{INITIAL_MESSAGE}}
+</initial_message>
+
+Follow these guidelines to generate an appropriate chat name:
+
+1. Identify the main topic or purpose of the message.
+2. Keep the chat name short and concise, ideally 2-5 words.
+3. Use key words or phrases from the message if appropriate.
+4. Avoid using personal names or sensitive information.
+5. Make the chat name descriptive and easy to understand.
+6. If the message is a greeting or doesn't have a clear topic, use a generic name like "New Conversation" or "General Chat".
+
+Provide your only the generated chat name within. Do not include any explanation or additional text.
 `
 
 export const systemPrompt = `

@@ -69,8 +69,7 @@ export async function generateChatName(message: string, userId: string) {
 
   const result = await generateText({
     model,
-    system: generateChatNamePrompt,
-    prompt: message,
+    prompt: generateChatNamePrompt.replace("{{INITIAL_MESSAGE}}", message),
     maxTokens: 50,
   })
 
