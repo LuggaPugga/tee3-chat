@@ -133,18 +133,6 @@ export default function Chat({ chatId, preSubmit, initialMessage }: ChatProps) {
   }, [messagesForRendering.length, handleInitialScroll, isLoading, chatId])
 
   useEffect(() => {
-    if (!isLoading) {
-      checkScrollPosition()
-    }
-  }, [
-    messagesForRendering,
-    chatActions.streamingMessage,
-    chatActions.optimisticMessage,
-    checkScrollPosition,
-    isLoading,
-  ])
-
-  useEffect(() => {
     if (initialMessage && !hasAutoSubmitted && chatId && !isLoading && !chatActions.isStreaming) {
       setHasAutoSubmitted(true)
       chatActions.handleChatSubmit(initialMessage, () => {})
