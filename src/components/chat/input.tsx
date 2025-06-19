@@ -136,6 +136,7 @@ export default function ChatInput({
                   onChange={handleTextareaChange}
                   onKeyDown={handleKeyDown}
                   style={{ height: "48px" }}
+                  autoFocus
                 />
                 <div id="chat-input-description" className="sr-only">
                   Press Enter to send, Shift + Enter for new line
