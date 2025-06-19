@@ -86,9 +86,9 @@ export default function Wordmark({ setInput }: WordmarkProps) {
   return (
     <div
       ref={wordmarkRef}
-      className="fixed z-50"
+      className="absolute z-50"
       style={{
-        left: wordmarkPosition.x - 30,
+        left: wordmarkPosition.x - 280,
         top: wordmarkPosition.y + 5,
       }}
     >
