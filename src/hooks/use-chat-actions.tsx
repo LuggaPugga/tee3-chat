@@ -191,6 +191,8 @@ export function useChatActions({
           )
         })
       }
+
+      setIsStreaming(false)
     } catch (error) {
       if (error instanceof Error && error.name !== "AbortError") {
         console.error("Error during AI response:", error)
