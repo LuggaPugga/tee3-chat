@@ -66,6 +66,13 @@ export function useChatActions({
     }
   }, [messagesForRendering, optimisticMessage])
 
+  useEffect(() => {
+    if (streamingMessage && messagesForRendering.some((msg) => msg.id === streamingMessage?.id)) {
+      setStreamingMessage(null)
+      setIsStreaming(false)
+    }
+  }, [messagesForRendering, streamingMessage, setStreamingMessage, setIsStreaming])
+
   const handleAIResponse = async (
     input: string,
     selectedModel: Model,
@@ -197,7 +204,7 @@ export function useChatActions({
         )
       }
     } finally {
-      if (controllerRef.current && !controllerRef.current.signal.aborted) {
+      if (controllerRef.current && controllerRef.current.signal.aborted) {
         setStreamingMessage(null)
         setIsStreaming(false)
       }
