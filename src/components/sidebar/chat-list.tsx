@@ -1,19 +1,18 @@
-"use client"
-
+import React from "react"
 import { useRouterState } from "@tanstack/react-router"
-import { useMemo } from "react"
 import { db } from "@/utils/instant"
 import { EnrichedChat } from "@/lib/chat/types"
 import { categorizeChats } from "@/lib/chat/utils"
-import { ChatGroupDisplay } from "./chat-group-display"
-
-import { useRef, useEffect, useState } from "react"
+import { SidebarGroup, SidebarGroupLabel } from "../ui/sidebar"
+import { PinIcon } from "lucide-react"
+import { ChatItem } from "./chat-item"
+import { useVirtualizer } from "@tanstack/react-virtual"
 
 export default function ChatsList({ search }: { search: string }) {
-  const [debouncedSearch, setDebouncedSearch] = useState(search)
-  const debounceTimeout = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [debouncedSearch, setDebouncedSearch] = React.useState(search)
+  const debounceTimeout = React.useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (!search) {
       setDebouncedSearch("")
       if (debounceTimeout.current) clearTimeout(debounceTimeout.current)
@@ -48,7 +47,7 @@ export default function ChatsList({ search }: { search: string }) {
   })
   const { location } = useRouterState()
 
-  const chatNameMap = useMemo(
+  const chatNameMap = React.useMemo(
     () =>
       data?.chats.reduce((map, chat) => {
         map.set(chat.id, chat.name || "Untitled Chat")
@@ -57,7 +56,7 @@ export default function ChatsList({ search }: { search: string }) {
     [data?.chats]
   )
 
-  const transformedChats = useMemo<EnrichedChat[]>(
+  const transformedChats = React.useMemo<EnrichedChat[]>(
     () =>
       data?.chats
         ? data.chats.map((chat) => ({
@@ -72,9 +71,28 @@ export default function ChatsList({ search }: { search: string }) {
     [data?.chats, chatNameMap]
   )
 
-  const chatGroups = useMemo(() => {
+  const chatGroups = React.useMemo(() => {
     return categorizeChats(transformedChats)
   }, [transformedChats])
+
+  const flattenedItems = React.useMemo(() => {
+    const items: Array<{
+      type: "header" | "chat"
+      group?: string
+      chat?: EnrichedChat
+      index: number
+    }> = []
+    let index = 0
+
+    chatGroups.forEach((group) => {
+      items.push({ type: "header", group: group.label, index: index++ })
+      group.chats.forEach((chat) => {
+        items.push({ type: "chat", chat, index: index++ })
+      })
+    })
+
+    return items
+  }, [chatGroups])
 
   if (error) {
     return (
@@ -84,11 +102,80 @@ export default function ChatsList({ search }: { search: string }) {
     )
   }
 
+  const scrollContainerRef = React.useRef<HTMLDivElement>(null)
+
+  const virtualizer = useVirtualizer({
+    count: flattenedItems.length,
+    estimateSize: (index) => {
+      return flattenedItems[index]?.type === "header" ? 40 : 36
+    },
+    getScrollElement: () => scrollContainerRef.current,
+    overscan: 10,
+  })
+
   return (
-    <div className="space-y-2 max-h-[calc(100vh-14rem)] overflow-auto no-scrollbar">
-      {chatGroups.map((group) => (
-        <ChatGroupDisplay key={group.label} group={group} currentPath={location.pathname} />
-      ))}
+    <div ref={scrollContainerRef} className="max-h-[calc(100vh-14rem)] overflow-auto no-scrollbar">
+      <div
+        style={{
+          height: `${virtualizer.getTotalSize()}px`,
+          width: "100%",
+          position: "relative",
+        }}
+      >
+        {virtualizer.getVirtualItems().map((virtualItem) => {
+          const item = flattenedItems[virtualItem.index]
+
+          if (item?.type === "header") {
+            return (
+              <div
+                key={virtualItem.key}
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: `${virtualItem.size}px`,
+                  transform: `translateY(${virtualItem.start}px)`,
+                }}
+              >
+                <SidebarGroup className="relative flex w-full min-w-0 flex-col p-2">
+                  <SidebarGroupLabel className="px-1.5 text-heading">
+                    {item.group === "Pinned" ? (
+                      <span className="flex items-center">
+                        <PinIcon className="-ml-0.5 mr-1 mt-px !size-3" />
+                        {item.group}
+                      </span>
+                    ) : (
+                      <span>{item.group}</span>
+                    )}
+                  </SidebarGroupLabel>
+                </SidebarGroup>
+              </div>
+            )
+          }
+
+          if (item?.type === "chat" && item.chat) {
+            return (
+              <div
+                key={virtualItem.key}
+                style={{
+                  position: "absolute",
+                  top: 0,
+                  left: 0,
+                  width: "100%",
+                  height: `${virtualItem.size}px`,
+                  transform: `translateY(${virtualItem.start}px)`,
+                }}
+                className="px-2"
+              >
+                <ChatItem chat={item.chat} isActive={location.pathname.includes(item.chat.id)} />
+              </div>
+            )
+          }
+
+          return null
+        })}
+      </div>
     </div>
   )
 }
