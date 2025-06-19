@@ -28,22 +28,38 @@ export async function generateChatName(message: string, userId: string) {
   let model
   switch (true) {
     case !!googleKey: {
-      const google = createGoogleGenerativeAI({ apiKey: unhash(googleKey) })
+      const unhashedKey = unhash(googleKey)
+      if (!unhashedKey) {
+        return "New Chat"
+      }
+      const google = createGoogleGenerativeAI({ apiKey: unhashedKey })
       model = google("gemini-2.0-flash")
       break
     }
     case !!openrouterKey: {
-      const openrouter = createOpenRouter({ apiKey: unhash(openrouterKey) })
+      const unhashedKey = unhash(openrouterKey)
+      if (!unhashedKey) {
+        return "New Chat"
+      }
+      const openrouter = createOpenRouter({ apiKey: unhashedKey })
       model = openrouter("google/gemini-2.0-flash")
       break
     }
     case !!openaiKey: {
-      const openai = createOpenAI({ apiKey: unhash(openaiKey) })
+      const unhashedKey = unhash(openaiKey)
+      if (!unhashedKey) {
+        return "New Chat"
+      }
+      const openai = createOpenAI({ apiKey: unhashedKey })
       model = openai("gpt-4o-mini")
       break
     }
     case !!anthropicKey: {
-      const anthropic = createAnthropic({ apiKey: unhash(anthropicKey) })
+      const unhashedKey = unhash(anthropicKey)
+      if (!unhashedKey) {
+        return "New Chat"
+      }
+      const anthropic = createAnthropic({ apiKey: unhashedKey })
       model = anthropic("claude-3-5-haiku-latest")
       break
     }
