@@ -29,18 +29,23 @@ export function hash(
 export function unhash(
   encryptedData: string,
   password: string = process.env.ENCRYPTION_PASSWORD || "default-password"
-): string {
-  const data = Buffer.from(encryptedData, "base64")
-  const salt = data.subarray(0, SALT_LENGTH)
-  const iv = data.subarray(SALT_LENGTH, SALT_LENGTH + IV_LENGTH)
-  const tag = data.subarray(SALT_LENGTH + IV_LENGTH, SALT_LENGTH + IV_LENGTH + TAG_LENGTH)
-  const encrypted = data.subarray(SALT_LENGTH + IV_LENGTH + TAG_LENGTH)
+): string | null {
+  try {
+    const data = Buffer.from(encryptedData, "base64")
+    const salt = data.subarray(0, SALT_LENGTH)
+    const iv = data.subarray(SALT_LENGTH, SALT_LENGTH + IV_LENGTH)
+    const tag = data.subarray(SALT_LENGTH + IV_LENGTH, SALT_LENGTH + IV_LENGTH + TAG_LENGTH)
+    const encrypted = data.subarray(SALT_LENGTH + IV_LENGTH + TAG_LENGTH)
 
-  const key = deriveKey(password, salt)
+    const key = deriveKey(password, salt)
 
-  const decipher = createDecipheriv(ALGORITHM, key, iv)
-  decipher.setAuthTag(tag)
+    const decipher = createDecipheriv(ALGORITHM, key, iv)
+    decipher.setAuthTag(tag)
 
-  const decrypted = Buffer.concat([decipher.update(encrypted), decipher.final()])
-  return decrypted.toString("utf8")
+    const decrypted = Buffer.concat([decipher.update(encrypted), decipher.final()])
+    return decrypted.toString("utf8")
+  } catch (error) {
+    console.error(error)
+    return null
+  }
 }
