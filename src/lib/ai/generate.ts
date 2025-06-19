@@ -249,6 +249,12 @@ export const genAIResponse = createServerFn({ method: "POST", response: "raw" })
     }
 
     const unhashedApiKey = unhash(apiKey)
+    if (!unhashedApiKey) {
+      return new Response(JSON.stringify({ error: "Missing or invalid API key" }), {
+        status: 400,
+        headers: { "Content-Type": "application/json" },
+      })
+    }
 
     switch (actualApiProvider) {
       case "google":
